@@ -1,0 +1,82 @@
+@grey_font_color:#707070;
+@image_bg_color: #86a7f2;
+@inactive: rgba(0, 0, 0, 0.60);
+@input_bg_color: rgba(44, 107, 255, 0.08); 
+@message_border_color: #dce6ff;
+@primary_color:#152c61;
+@secondary_color: #2c6bff;
+@textarea_bg_color: #f5f8ff;
+@wall_bg_color: #fbfbfb;
+@white_color:#fff;
+@wrong_input_bg: rgba(255, 85, 76, 0.08);
+@wrong_input_font_color:#e1554c;
+
+*{
+    box-sizing:border-box;
+    font-family: Poppins-Regular;
+    margin: 0;
+    padding: 0;
+}
+
+
+@font-face {
+    font-family: Poppins-Bold;
+    src: url(/assets/fonts/Poppins/Poppins-Bold.ttf);
+}
+
+@font-face {
+    font-family: Poppins-Light;
+    src: url(/assets/fonts/Poppins/Poppins-Light.ttf);
+}
+
+@font-face {
+    font-family: Poppins-Medium;
+    src: url(/assets/fonts/Poppins/Poppins-Medium.ttf);
+}
+
+@font-face {
+    font-family: Poppins-Regular;
+    src: url(/assets/fonts/Poppins/Poppins-Regular.ttf);
+}
+
+@font-face {
+    font-family: Poppins-SemiBold;
+    src: url(/assets/fonts/Poppins/Poppins-SemiBold.ttf);
+}
+
+.hide{
+    display: none !important;
+}
+
+.show{
+    display: block !important;
+}
+
+.btn{
+    background-color: @secondary_color;
+    border-radius: 6px;
+    border: none;
+    color: @white_color;
+    cursor: pointer;
+    font: 500 16px/24px Poppins-Medium;
+    height: 38px;
+    width: 190px;
+
+    &:hover{
+        background-color: darken(@secondary_color, 20%)
+    }
+}
+
+.icons{
+    display: inline-block;
+    height: 20px;
+    margin-right: 10px;
+    vertical-align: text-top;
+    width: 24px;
+}
+
+.disabled{
+    background-color: #94b4fe !important;
+}
+
+

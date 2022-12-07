@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon_blue.png">
+    <meta name="description" content="Main page of the wall assignment">
+    <meta name="author" content="Noel M. Dasco Jr.">
+    <link rel="stylesheet" href="/assets/css/wall.min.css">
+    <title>The Wall | Main</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>The Wall Assignment</h1>
+            <div>
+                <p>Welcome, Noel Dasco!</p>
+                <a href="index.html">Logout</a>
+            </div>
+        </header>
+        <main>
+            <div class="create_message_container">
+                <p><span id="message_number">0</span> messages arrange by latest posted</p>
+                <button id="create_message_btn">Create Message</button>
+            </div>
+            <div id="message_container">
+                <!-- Start of Message template -->
+                <div class="messages inactive hide">
+                    <div class="message_form">
+                        <textarea disabled>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, consequuntur placeat? Ducimus totam, provident fugiat ea porro enim quia nam molestiae fuga, blanditiis autem? Voluptatibus, sequi recusandae? Suscipit, accusantium necessitatibus?</textarea>
+                    </div>
+                    <div class="buttons_container">
+                        <button class="comment"><span class="comment_icon"></span><span class="comment_count">0</span> comment</button>
+                        <button class="edit active"><span class="edit_icon"></span>Edit</button>
+                        <button class="delete"><span class="delete_icon"></span>Delete</button>
+                        <button><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</button>
+                    </div>
+                    <div class="edit_message_container hide">
+                        <button class="cancel_update">Cancel</button>
+                        <button class="update_message_btn"> Update Message</button>
+                    </div>
+                    <form class="comment_form active hide">
+                        <textarea placeholder="Type your comment here."></textarea>
+                        <button class="post_comment_btn disabled" type="submit" disabled>Post Comment</button>
+                    </form>
+                    <div class="comment_container hide">
+                    </div>
+                </div>
+                <!-- End of Message template -->
+                <!-- Start of comment container including form -->
+                <div class="comments inactive hide">
+                    <form class="message_form">
+                        <textarea disabled>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, consequuntur placeat? Ducimus totam, provident fugiat ea porro enim quia nam molestiae fuga, blanditiis autem? Voluptatibus, sequi recusandae? Suscipit, accusantium necessitatibus?</textarea>
+                    </form>
+                    <div class="buttons_container">
+                        <button class="edit active"><span class="edit_icon"></span>Edit</button>
+                        <button class="delete"><span class="delete_icon"></span>Delete</button>
+                        <button><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</button>
+                    </div>
+                    <div class="edit_message_container hide">
+                        <button class="cancel_update">Cancel</button>
+                        <button class="update_message_btn"> Update Comment</button>
+                    </div>
+                </div>
+                <!-- End of comment container including form -->
+                <div class="empty_message_container show">
+                    <img src="/assets/images/Vector.png" alt="Empty message icon">
+                    <p>No Posted Message Yet.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="remove_modal remove_message modal hide">
+        <div class="modal_panel">
+            <button class="close_modal_btn"><span></span></button>
+            <h1>Confirm Delete Message</h1>
+            <p>Are you sure you want to remove this message ?</p>
+            <p>This action cannot be undone.</p>
+            <div>
+                <button class="cancel_btn">Cancel</button>
+                <button class="confirm_delete_btn">Yes, Remove it.</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="remove_modal remove_comment modal hide">
+        <div class="modal_panel">
+            <button class="close_modal_btn"><span></span></button>
+            <h1>Confirm Delete Comment</h1>
+            <p>Are you sure you want to remove this comment ?</p>
+            <p>This action cannot be undone.</p>
+            <div>
+                <button class="cancel_btn">Cancel</button>
+                <button class="confirm_delete_btn">Yes, Remove it.</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="create_new_message_modal modal hide">
+        <div class="modal_panel">
+            <button class="close_modal_btn"><span></span></button>
+            <h1>Create a Message</h1>
+            <textarea placeholder="Type your message here" class="create_new_message_textarea"></textarea>
+            <div>
+                <button class="cancel_btn">Cancel</button>
+                <button class="post_message_btn disabled" disabled>Post Message</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/js/wall.js"></script>
+</body>
+</html>
