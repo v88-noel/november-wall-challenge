@@ -71,9 +71,15 @@ function resetForm(textarea, button){
 }
 
 /* When the user clicks the delete button, show the delete message modal. */
-function showDeleteMessageModal(parent){
-    delete_node_holder = parent;
-    showElement(remove_message);
+function showDeleteModal(content_to_delete){
+    delete_node_holder = content_to_delete;
+    const content_class_list = content_to_delete.classList;
+
+    if(content_class_list.contains('messages')){
+        showElement(remove_message);
+    }else{
+        showElement(remove_comment);
+    }
 }
 
 /* Bind click listener to hide element in modal containing the clicked button */
@@ -136,7 +142,7 @@ function createNewMessage(message){
     const update_message_btn = message_clone.querySelector('.update_message_btn');
 
     button_container.querySelector('.comment').addEventListener('click', ()=>toggleAddComment(comment_form_node));
-    button_container.querySelector('.delete').addEventListener('click', ()=>showDeleteMessageModal(message_clone));
+    button_container.querySelector('.delete').addEventListener('click', ()=>showDeleteModal(message_clone));
     button_container.querySelector('.edit').addEventListener('click', ()=>showEditFunction(button_container, message_clone));
     edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>updateMessage(message_clone));
     update_message_btn.addEventListener('click', ()=>updateMessage(message_clone));
@@ -225,7 +231,7 @@ function prependComment(event){
         const update_message_btn = comment_clone.querySelector('.update_message_btn');
 
         comment_clone.querySelector('form textarea').value = comment_value;
-        comment_clone.querySelector('.buttons_container .delete').addEventListener('click', ()=>deleteComment(comment_clone));
+        comment_clone.querySelector('.buttons_container .delete').addEventListener('click', ()=>showDeleteModal(comment_clone));
         comment_clone.querySelector('.buttons_container .edit').addEventListener('click', ()=>showEditFunction(button_container, comment_clone));
         edit_message_container.querySelector('.update_message_btn').addEventListener('click', ()=>updateMessage(comment_clone));
         edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>updateMessage(comment_clone));
@@ -301,8 +307,3 @@ function commentFormKeyUp(event, comment_form_submit_btn){
 * When the delete button is clicked, show the delete confirmation button and store the parent node of
 * the deleted button in a variable.
 */
-function deleteComment(comment_node){
-    showElement(remove_comment);
-    delete_node_holder = comment_node;
-}
-
