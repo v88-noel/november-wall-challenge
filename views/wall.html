@@ -21,7 +21,7 @@
                 </div>
             </section>
         </header>
-        <main class="wrapper">
+        <main>
             <div class="create_message_container">
                 <p><span id="message_number">0</span> messages arrange by latest posted</p>
                 <button id="create_message_btn">Create Message</button>
@@ -75,7 +75,7 @@
     </div>
 
     <div class="remove_modal remove_message modal hide">
-        <div class="modal_panel">
+        <form class="modal_panel">
             <button class="close_modal_btn close_modal"><span></span></button>
             <h1>Confirm Delete Message</h1>
             <p>Are you sure you want to remove this message ?</p>
@@ -84,11 +84,11 @@
                 <button class="cancel_btn close_modal">Cancel</button>
                 <button class="confirm_delete_btn">Yes, Remove it.</button>
             </div>
-        </div>
+        </form>
     </div>
 
     <div class="remove_modal remove_comment modal hide">
-        <div class="modal_panel">
+        <form class="modal_panel">
             <button class="close_modal_btn close_modal"><span></span></button>
             <h1>Confirm Delete Comment</h1>
             <p>Are you sure you want to remove this comment ?</p>
@@ -97,19 +97,19 @@
                 <button class="cancel_btn close_modal">Cancel</button>
                 <button class="confirm_delete_btn">Yes, Remove it.</button>
             </div>
-        </div>
+        </form>
     </div>
 
     <div class="create_new_message_modal modal hide">
-        <div class="modal_panel">
+        <form class="modal_panel">
             <button class="close_modal_btn close_modal"><span></span></button>
             <h1>Create a Message</h1>
             <textarea placeholder="Type your message here" class="create_new_message_textarea"></textarea>
             <div>
                 <button class="cancel_btn close_modal">Cancel</button>
-                <button class="post_message_btn disabled" disabled>Post Message</button>
+                <button type="submit" class="post_message_btn disabled" disabled>Post Message</button>
             </div>
-        </div>
+        </form>
     </div>
 
     <script src="/assets/js/wall.js"></script>
