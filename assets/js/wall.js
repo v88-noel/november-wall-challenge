@@ -20,6 +20,7 @@ const cancel_btn = document.querySelectorAll('.cancel_btn');
 const close_modal_btn = document.querySelectorAll('.close_modal_btn');
 const post_message_btn = document.querySelector('.post_message_btn');
 const confirm_delete_btn = document.querySelectorAll('.confirm_delete_btn');
+const close_modal = document.querySelectorAll('.close_modal');
 
 /* Containers */
 const message_container = document.getElementById('message_container');
@@ -29,6 +30,21 @@ const message_template = document.querySelector('.messages');
 const comment_template = document.querySelector('.comments');
 
 let delete_node_holder = '';
+
+/**
+* Event Listeners
+*/
+create_message_btn.addEventListener('click', ()=>showElement(create_new_message_modal));
+create_new_message_textarea.addEventListener('keyup', newMessageTextAreaKeyUp);
+post_message_btn.addEventListener('click', postMessageBtnOnClick);
+
+for(let index = 0; index < confirm_delete_btn.length; index++){
+    confirm_delete_btn[index].addEventListener('click', confirmDeleteOnClick);
+}
+
+for(let index = 0; index < close_modal.length; index++){
+    close_modal[index].addEventListener('click', hideModal);
+}
 
 /**
 * Functions
@@ -46,18 +62,6 @@ function hideElement(element){
     element.classList.remove('show');
 }
 
-/* If the element has the class 'inactive', remove it and add the class 'active'. */
-function changeToActive(element){
-    element.classList.add('active');
-    element.classList.remove('inactive');
-}
-
-/* If the element has the class 'active', then remove it and add the class 'inactive'. */
-function changeToInactive(element){
-    element.classList.add('inactive');
-    element.classList.remove('active');
-}
-
 /* Reset form by removing all text in textarea and set button to become disabled */
 function resetForm(textarea, button){
     textarea.value = '';
@@ -71,6 +75,25 @@ function showDeleteMessageModal(parent){
     showElement(remove_message);
 }
 
+/* Bind click listener to hide element in modal containing the clicked button */
+function hideModal(event){
+    let modal = event.target.closest('.modal');
+    hideElement(modal);
+
+    if(modal.classList.contains('create_new_message_modal')){
+        let modal_textarea = modal.querySelector('.create_new_message_modal textarea');
+        let post_message_btn = modal.querySelector('.create_new_message_modal .post_message_btn');
+        resetForm(modal_textarea, post_message_btn);
+    }
+}
+
+/* Add/Delete "disabled" in class list of element and changes disabled attribute to true/false */
+function newMessageTextAreaKeyUp(event){
+    let post_message_button_node = event.target.nextElementSibling.children[1];
+    let length_value = event.target.value.length;
+    changeDisabledAttribute(length_value, post_message_button_node);
+}
+
 /* Show and hide comment form */
 function toggleAddComment(comment_form){
     let class_list = comment_form.classList;
@@ -80,6 +103,20 @@ function toggleAddComment(comment_form){
     else{
         hideElement(comment_form);
     }
+}
+
+/* The above code is adding an event listener to the post message button. When the button is clicked,
+the code will grab the value of the textarea and if the value length is greater than 0, it will create a
+new message, reset the form, and hide the element. */
+function postMessageBtnOnClick(event){
+    let create_new_message_modal = event.target.closest('.create_new_message_modal');
+    let message_value = create_new_message_textarea.value;
+
+    if(message_value.length > 0){
+        createNewMessage(create_new_message_textarea.value);
+        resetForm(create_new_message_textarea, post_message_btn);
+        hideElement(create_new_message_modal); 
+    }    
 }
 
 /* Creates a new message, adds event listeners to the buttons, and prepends the message to the message container.*/
@@ -97,11 +134,12 @@ function createNewMessage(message){
     button_container.querySelector('.comment').addEventListener('click', ()=>toggleAddComment(comment_form_node));
     button_container.querySelector('.delete').addEventListener('click', ()=>showDeleteMessageModal(message_clone));
     button_container.querySelector('.edit').addEventListener('click', ()=>showEditFunction(button_container, message_clone));
+
     update_message_btn.addEventListener('click', ()=>updateMessage(message_clone));
     edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>updateMessage(message_clone));
     message_clone.querySelector('.comment_form').addEventListener('submit', prependComment);
-    comment_form_node.querySelector('textarea').addEventListener('keydown', (event)=>commentFormKeyDown(event, comment_form_submit_btn));
-    message_form.querySelector('textarea').addEventListener('keydown', (event)=>commentFormKeyDown(event, update_message_btn));
+    comment_form_node.querySelector('textarea').addEventListener('keyup', (event)=>commentFormKeyUp(event, comment_form_submit_btn));
+    message_form.querySelector('textarea').addEventListener('keyup', (event)=>commentFormKeyUp(event, update_message_btn));
     
     message_container.prepend(message_clone);
     updateMessageCount();
@@ -119,7 +157,8 @@ function showEditFunction(button_container, clone){
     if(class_list.contains('inactive')){
         hideElement(button_container);
         showElement(edit_message_container);
-        changeToActive(clone);
+        clone.classList.add('active');
+        clone.classList.remove('inactive');
         clone_textarea.disabled = false;
     }
 }
@@ -129,10 +168,31 @@ function updateMessage(message_container){
     let message_textarea = message_container.querySelector('.message_form textarea');
     
     if(message_textarea.value.length > 0){
-        changeToInactive(message_container);
+        element.classList.add('inactive');
+        element.classList.remove('active');
         message_textarea.disabled = true;
         hideElement(message_container.querySelector('.edit_message_container'));
         showElement(message_container.querySelector('.buttons_container'));
+    }
+}
+
+/* Adding an event listener to the confirm delete button. When the button is clicked,
+the code will remove the node stored in delete_node_holder and then hide the modal. */
+function confirmDeleteOnClick(event){
+    let modal_class_list = event.target.closest('.modal').classList;
+
+    if(event.target.classList.contains('confirm_delete_btn')){
+        if(modal_class_list.contains('remove_message')){
+            delete_node_holder.closest('#message_container').removeChild(delete_node_holder);
+            hideElement(remove_message);
+            updateMessageCount();
+        }
+        else{
+            let container = delete_node_holder.closest('.comment_container');
+            container.removeChild(delete_node_holder)
+            hideElement(remove_comment);
+            updateCommentCount(container.parentElement);
+        }
     }
 }
 
@@ -145,12 +205,16 @@ function prependComment(event){
     event.preventDefault();
     let comment_value = event.target[0].value; 
 
-    if(comment_value.length > 0){
+    if(comment_value.length){
         const parent = event.target.parentElement;
         const comment_form_submit_btn = parent.querySelector('.comment_form .post_comment_btn');
         const comment_form_text_area = parent.querySelector('.comment_form textarea');
         const parent_comment_container = parent.querySelector('.comment_container');
+        parent_comment_container.classList.remove('hide');
+
         const comment_clone = comment_template.cloneNode(true);
+        comment_clone.classList.remove('hide');
+
         const button_container = comment_clone.querySelector('.buttons_container');
         const message_form = comment_clone.querySelector('.message_form');
         const edit_message_container = comment_clone.querySelector('.edit_message_container');
@@ -161,11 +225,9 @@ function prependComment(event){
         comment_clone.querySelector('.buttons_container .edit').addEventListener('click', ()=>showEditFunction(button_container, comment_clone));
         edit_message_container.querySelector('.update_message_btn').addEventListener('click', ()=>updateMessage(comment_clone));
         edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>updateMessage(comment_clone));
-        message_form.querySelector('textarea').addEventListener('keydown', (event)=>commentFormKeyDown(event, update_message_btn));
+        message_form.querySelector('textarea').addEventListener('keyup', (event)=>commentFormKeyUp(event, update_message_btn));
 
         resetForm(comment_form_text_area, comment_form_submit_btn);
-        showElement(comment_clone);
-        showElement(parent_comment_container);
         parent_comment_container.prepend(comment_clone);
         updateCommentCount(parent);
     }
@@ -188,12 +250,12 @@ function updateMessageCount(){
 * It updates the comment count from a message.
 */
 function updateCommentCount(parent){
-    let comment_count = parent.querySelector('.comment_container').children.length;
+    const comment_count = parent.querySelector('.comment_container').children.length;
     const comment_btn_icon = parent.querySelector('.comment span');
     const comment_count_span = parent.querySelector('.comment .comment_count')
     const comment_btn = parent.querySelector('.comment');
 
-    if(comment_count > 0){
+    if(comment_count){
         comment_btn_icon.classList.add('active_comment_icon');
         comment_btn.classList.add('active');  
     }
@@ -206,17 +268,17 @@ function updateCommentCount(parent){
 }
 
 /**
-* If the target length is greater than 0, remove the disabled class and set the disabled attribute to
-* false. Otherwise, add the disabled class and set the disabled attribute to true
+* If the textarea has text in it, remove the disabled class and set the disabled attribute to false.
+* If the textarea is empty, add the disabled class and set the disabled attribute to true
 */
-function changeDisabledAttribute(target_length, node){
-    if(target_length > 0){
-        node.classList.remove('disabled');
-        node.disabled = false;
+function changeDisabledAttribute(textarea_length, button_to_be_disabled){
+    if(textarea_length){
+        button_to_be_disabled.classList.remove('disabled');
+        button_to_be_disabled.disabled = false;
     }
     else{
-        node.classList.add('disabled');
-        node.disabled = true;
+        button_to_be_disabled.classList.add('disabled');
+        button_to_be_disabled.disabled = true;
     }
 }
 
@@ -224,7 +286,7 @@ function changeDisabledAttribute(target_length, node){
 * If the length of the textarea is greater than 0, then remove the disabled attribute from the submit
 * button.
 */
-function commentFormKeyDown(event, comment_form_submit_btn){
+function commentFormKeyUp(event, comment_form_submit_btn){
     let textarea_length = event.target.value.length;
     changeDisabledAttribute(textarea_length, comment_form_submit_btn);
 }
@@ -238,73 +300,3 @@ function deleteComment(parent){
     delete_node_holder = parent;
 }
 
-/**
-*  End of Functions
-*/
-
-/**
-* Event Listeners
-*/
-
-/* Triggered by clicking "create message" button at the very top of main container*/
-create_message_btn.addEventListener('click', function(event){
-    showElement(create_new_message_modal);
-});
-
-/* Bind click listener to hide element in modal containing the clicked button */
-for(let index = 0; index < cancel_btn.length; index++){
-    cancel_btn[index].addEventListener('click', function(event){
-        hideElement(event.target.parentElement.parentElement.parentElement);
-    });
-}
-
-/* Bind click listener to hide element in modal containing the clicked button */
-for(let index = 0; index < close_modal_btn.length; index++){
-    close_modal_btn[index].addEventListener('click', function(event){
-        hideElement(event.target.parentElement.parentElement.parentElement);
-    });
-}
-
-/* Add/Delete "disabled" in class list of element and changes disabled attribute to true/false */
-create_new_message_textarea.addEventListener('keydown', function(event){
-    let post_message_button_node = event.target.nextElementSibling.children[1];
-    let length_value = event.target.value.length;
-    changeDisabledAttribute(length_value, post_message_button_node);
-});
-
-
-/* The above code is adding an event listener to the post message button. When the button is clicked,
-the code will grab the value of the textarea and if the value length is greater than 0, it will create a
-new message, reset the form, and hide the element. */
-post_message_btn.addEventListener('click', function(event){
-    let target_parent = event.target.parentElement.parentElement.parentElement;
-    let message_value = create_new_message_textarea.value;
-
-    if(message_value.length > 0){
-        createNewMessage(create_new_message_textarea.value);
-        resetForm(create_new_message_textarea, post_message_btn);
-        hideElement(target_parent); 
-    }    
-});
-
-/* Adding an event listener to the confirm delete button. When the button is clicked,
-the code will remove the node stored in delete_node_holder and then hide the modal. */
-for(let index = 0; index < confirm_delete_btn.length; index++){
-    confirm_delete_btn[index].addEventListener('click', function(event){
-        let parent_node = delete_node_holder.parentElement;
-        let modal_parent = event.target.parentElement.parentElement.parentElement.classList;
-
-        if(event.target.classList.contains('confirm_delete_btn')){
-            parent_node.removeChild(delete_node_holder);
-
-            if(modal_parent.contains('remove_message')){
-                hideElement(remove_message);
-                updateMessageCount();
-            }
-            else{
-                hideElement(remove_comment);
-                updateCommentCount(parent_node.parentElement);
-            }
-        }
-    });
-}

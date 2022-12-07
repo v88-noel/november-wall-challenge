@@ -1,29 +1,42 @@
 @import url(assets/less/global.less);
 
+body{
+    overflow: hidden;
+}
+
 .container{
     background-color: @wall_bg_color;
     height: 100vh;
+    overflow: auto;
+    
     header{
         background-color: @white_color;
         border-radius: 6px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
         height: 121px;
         padding: 20px;
-        
-        h1{
-            font: 500 26px/39px Poppins-Medium;
-            color: @primary_color;
-        }
-        
-        div{
-            color: inherit;
+
+        section{  
+            align-items: center;
             display: flex;
-            font: 300 16px/24px Poppins-Light;
-            a{
-                color: @secondary_color;
-                font: 600 16px/24px Poppins-SemiBold;
-                margin-left: 16px;
-                text-decoration: none;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            h1{
+                color: @primary_color;
+                font: 500 26px/39px Poppins-Medium;
+            }
+            
+            div{
+                color: inherit;
+                display: flex;
+                font: 300 16px/24px Poppins-Light;
+                a{
+                    color: @secondary_color;
+                    font: 600 16px/24px Poppins-SemiBold;
+                    margin-left: 16px;
+                    text-decoration: none;
+                }
             }
         }
     }
@@ -32,10 +45,8 @@
         background-color: @white_color;
         border-radius: 6px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
-        height: 80vh;
         margin: 20px;
         min-height: 80vh;
-        overflow: auto;
         padding: 20px;
         
         .create_message_container{
@@ -89,7 +100,7 @@
                         color: @inactive;
                         cursor: pointer;
                         font: 400 16px/24px Poppins-Regular;
-                        margin-right: 28px;
+                        margin-right: 21px;
                         margin-top: 20px;
 
                         img{
@@ -121,10 +132,6 @@
                         .btn;
                         margin-left: 30px;
                     }
-                }
-
-                .buttoooon(@button_height){
-                    height: @button_height;
                 }
 
                 .comment_form{
@@ -205,10 +212,10 @@
 
 /* Modals */
 .modal{
-    overflow: hidden;
     background-color: rgba(0, 0, 0, 0.5);
     height: 100%;
     left: 0;
+    overflow: hidden;
     position: fixed;
     text-align: center;
     top: 0;
@@ -308,28 +315,36 @@
 @media only screen and (min-width: 600px) {
     .container{
         header{
-            align-items: center;
+            align-content: center;
             background-color: @white_color;
-            border-radius: 6px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
             display: flex;
-            justify-content: space-between;
-            padding: 20px;
+            justify-content: center;
 
-            h1{
-                color: @primary_color;
-                font-size: 26px;
-            }
-            
-            div{
-                display: flex;
-                color: inherit;
+            section{
+                align-items: center;
+                border-radius: 6px;
+                display: inherit;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                padding: 20px;
+                width: 100%;
     
-                a{
-                    color: @secondary_color;
-                    font-weight: 600;
-                    margin-left: 15px;
-                    text-decoration: none;
+                h1{
+                    color: @primary_color;
+                    font-size: 26px;
+                }
+                
+                div{
+                    display: flex;
+                    color: inherit;
+        
+                    a{
+                        color: @secondary_color;
+                        font-weight: 600;
+                        margin-left: 15px;
+                        text-decoration: none;
+                    }
                 }
             }
         }
@@ -395,12 +410,16 @@
 @media only screen and (min-width: 1280px) {
     .container{
         header{
-            padding: 40px 80px;
+            section{
+                width: 1280px;
+            }
         }
 
         main{
             margin: 50px 80px;
+            max-width: 1280px;
             padding: 70px;
+            margin:50px auto;
 
             #message_container{
                 .messages{
