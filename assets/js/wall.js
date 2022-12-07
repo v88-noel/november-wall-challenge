@@ -29,6 +29,7 @@ const message_container = document.getElementById('message_container');
 const message_template = document.querySelector('.messages');
 const comment_template = document.querySelector('.comments');
 
+/* Hold the node of comment/message to be deleted. */
 let delete_node_holder = '';
 
 /**
@@ -77,26 +78,28 @@ function showDeleteMessageModal(parent){
 
 /* Bind click listener to hide element in modal containing the clicked button */
 function hideModal(event){
-    let modal = event.target.closest('.modal');
+    event.preventDefault();
+    const modal = event.target.closest('.modal');
     hideElement(modal);
 
     if(modal.classList.contains('create_new_message_modal')){
-        let modal_textarea = modal.querySelector('.create_new_message_modal textarea');
-        let post_message_btn = modal.querySelector('.create_new_message_modal .post_message_btn');
+        const modal_textarea = modal.querySelector('.create_new_message_modal textarea');
+        const post_message_btn = modal.querySelector('.create_new_message_modal .post_message_btn');
         resetForm(modal_textarea, post_message_btn);
     }
 }
 
 /* Add/Delete "disabled" in class list of element and changes disabled attribute to true/false */
 function newMessageTextAreaKeyUp(event){
-    let post_message_button_node = event.target.nextElementSibling.children[1];
-    let length_value = event.target.value.length;
+    const post_message_button_node = event.target.nextElementSibling.children[1];
+    const length_value = event.target.value.length;
     changeDisabledAttribute(length_value, post_message_button_node);
 }
 
 /* Show and hide comment form */
 function toggleAddComment(comment_form){
-    let class_list = comment_form.classList;
+    const class_list = comment_form.classList;
+
     if(class_list.contains('hide')){
         showElement(comment_form);
     }
@@ -109,8 +112,9 @@ function toggleAddComment(comment_form){
 the code will grab the value of the textarea and if the value length is greater than 0, it will create a
 new message, reset the form, and hide the element. */
 function postMessageBtnOnClick(event){
-    let create_new_message_modal = event.target.closest('.create_new_message_modal');
-    let message_value = create_new_message_textarea.value;
+    event.preventDefault();
+    const create_new_message_modal = event.target.closest('.create_new_message_modal');
+    const message_value = create_new_message_textarea.value;
 
     if(message_value.length > 0){
         createNewMessage(create_new_message_textarea.value);
@@ -134,9 +138,8 @@ function createNewMessage(message){
     button_container.querySelector('.comment').addEventListener('click', ()=>toggleAddComment(comment_form_node));
     button_container.querySelector('.delete').addEventListener('click', ()=>showDeleteMessageModal(message_clone));
     button_container.querySelector('.edit').addEventListener('click', ()=>showEditFunction(button_container, message_clone));
-
-    update_message_btn.addEventListener('click', ()=>updateMessage(message_clone));
     edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>updateMessage(message_clone));
+    update_message_btn.addEventListener('click', ()=>updateMessage(message_clone));
     message_clone.querySelector('.comment_form').addEventListener('submit', prependComment);
     comment_form_node.querySelector('textarea').addEventListener('keyup', (event)=>commentFormKeyUp(event, comment_form_submit_btn));
     message_form.querySelector('textarea').addEventListener('keyup', (event)=>commentFormKeyUp(event, update_message_btn));
@@ -165,11 +168,11 @@ function showEditFunction(button_container, clone){
 
 /* When the user clicks the update button, the message is updated and the message form is disabled. */
 function updateMessage(message_container){
-    let message_textarea = message_container.querySelector('.message_form textarea');
+    const message_textarea = message_container.querySelector('.message_form textarea');
     
     if(message_textarea.value.length > 0){
-        element.classList.add('inactive');
-        element.classList.remove('active');
+        message_container.classList.add('inactive');
+        message_container.classList.remove('active');
         message_textarea.disabled = true;
         hideElement(message_container.querySelector('.edit_message_container'));
         showElement(message_container.querySelector('.buttons_container'));
@@ -179,7 +182,8 @@ function updateMessage(message_container){
 /* Adding an event listener to the confirm delete button. When the button is clicked,
 the code will remove the node stored in delete_node_holder and then hide the modal. */
 function confirmDeleteOnClick(event){
-    let modal_class_list = event.target.closest('.modal').classList;
+    event.preventDefault();
+    const modal_class_list = event.target.closest('.modal').classList;
 
     if(event.target.classList.contains('confirm_delete_btn')){
         if(modal_class_list.contains('remove_message')){
@@ -191,7 +195,7 @@ function confirmDeleteOnClick(event){
             let container = delete_node_holder.closest('.comment_container');
             container.removeChild(delete_node_holder)
             hideElement(remove_comment);
-            updateCommentCount(container.parentElement);
+            updateCommentCount(container.closest('.messages'));
         }
     }
 }
@@ -203,13 +207,13 @@ function confirmDeleteOnClick(event){
 */
 function prependComment(event){
     event.preventDefault();
-    let comment_value = event.target[0].value; 
+    const comment_value = event.target[0].value; 
 
     if(comment_value.length){
-        const parent = event.target.parentElement;
-        const comment_form_submit_btn = parent.querySelector('.comment_form .post_comment_btn');
-        const comment_form_text_area = parent.querySelector('.comment_form textarea');
-        const parent_comment_container = parent.querySelector('.comment_container');
+        const parent_message = event.target.closest('.messages');
+        const comment_form_submit_btn = parent_message.querySelector('.comment_form .post_comment_btn');
+        const comment_form_text_area = parent_message.querySelector('.comment_form textarea');
+        const parent_comment_container = parent_message.querySelector('.comment_container');
         parent_comment_container.classList.remove('hide');
 
         const comment_clone = comment_template.cloneNode(true);
@@ -227,17 +231,18 @@ function prependComment(event){
         edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>updateMessage(comment_clone));
         message_form.querySelector('textarea').addEventListener('keyup', (event)=>commentFormKeyUp(event, update_message_btn));
 
-        resetForm(comment_form_text_area, comment_form_submit_btn);
         parent_comment_container.prepend(comment_clone);
-        updateCommentCount(parent);
+        resetForm(comment_form_text_area, comment_form_submit_btn);
+        updateCommentCount(parent_message);
     }
 }
 
 
 /* Updates message_number span count after adding/deleting messages */
 function updateMessageCount(){
-    let message_count = message_container.children.length - 3;
+    const message_count = message_container.children.length - 3;
     message_number.innerText = message_count;
+
     if(message_count <= 0){
         showElement(empty_message_container);
     }
@@ -247,7 +252,8 @@ function updateMessageCount(){
 }
 
 /**
-* It updates the comment count from a message.
+* It updates the comment count based from the number of child in comment container. 
+* It then changes the comment button and icons color depending on number of comments.
 */
 function updateCommentCount(parent){
     const comment_count = parent.querySelector('.comment_container').children.length;
@@ -287,7 +293,7 @@ function changeDisabledAttribute(textarea_length, button_to_be_disabled){
 * button.
 */
 function commentFormKeyUp(event, comment_form_submit_btn){
-    let textarea_length = event.target.value.length;
+    const textarea_length = event.target.value.length;
     changeDisabledAttribute(textarea_length, comment_form_submit_btn);
 }
 
@@ -295,8 +301,8 @@ function commentFormKeyUp(event, comment_form_submit_btn){
 * When the delete button is clicked, show the delete confirmation button and store the parent node of
 * the deleted button in a variable.
 */
-function deleteComment(parent){
+function deleteComment(comment_node){
     showElement(remove_comment);
-    delete_node_holder = parent;
+    delete_node_holder = comment_node;
 }
 
