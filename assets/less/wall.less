@@ -63,6 +63,7 @@ body{
             button{
                 .btn;
                 display: inline-block;
+                margin-top: 10px;
             }
         }
 
@@ -79,10 +80,10 @@ body{
                     border: 1px solid @message_border_color;
                     color: @primary_color;
                     display: block;
-                    min-height: 100px;
                     padding: 20px;
                     resize: none;
                     width: 100%;
+                    // min-height: 20px;
 
                     &:focus{
                         outline: none;
@@ -100,8 +101,7 @@ body{
                         color: @inactive;
                         cursor: pointer;
                         font: 400 16px/24px Poppins-Regular;
-                        margin-right: 21px;
-                        margin-top: 20px;
+                        margin-right: 10px;
 
                         img{
                             vertical-align: middle;
@@ -290,7 +290,6 @@ body{
             border: 1px solid @message_border_color;
             color: @primary_color;
             font: 300 16px/24px Poppins-Light;
-            height: fit-content;
             padding: 10px;
             resize: none;
             width: 100%;
@@ -327,7 +326,6 @@ body{
                 display: inherit;
                 flex-wrap: wrap;
                 justify-content: space-between;
-                padding: 20px;
                 width: 100%;
     
                 h1{
@@ -354,6 +352,10 @@ body{
                 align-items: center;
                 display: flex;
                 justify-content:space-between;
+                
+                button{
+                    margin-top: 0;
+                }
             }
         } 
     }
@@ -424,12 +426,16 @@ body{
             #message_container{
                 .messages{
                     textarea{
-                        min-height: 50px;
                         font: 300 16px/24px Poppins-Light;
                     }
                     .comment_form{
                         padding: 30px 30px 20px;
 
+                    }
+                    .buttons_container{
+                        button{
+                            margin-right: 21px;
+                        }   
                     }
                 }
             }
