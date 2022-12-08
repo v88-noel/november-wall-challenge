@@ -1,6 +1,4 @@
-/**
-* Variable Declarations
-*/
+/* ---- Variable Declarations ---- */
 
 /* Current Number of Message Span */
 const message_number = document.getElementById('message_number');
@@ -32,9 +30,7 @@ const comment_template = document.querySelector('.comments');
 /* Hold the node of comment/message to be deleted. */
 let delete_node_holder = '';
 
-/**
-* Onload event Listeners
-*/
+/* ---- Onload event Listeners ---- */
 create_message_btn.addEventListener('click', ()=>showElement(create_new_message_modal));
 create_new_message_textarea.addEventListener('keyup', (event)=>formTextAreaKeyUp(event, post_message_btn));
 post_message_btn.addEventListener('click', postMessageBtnOnClick);
@@ -47,9 +43,7 @@ for( let index = 0; index < close_modal.length; index++){
     close_modal[index].addEventListener('click', hideModal);
 }
 
-/**
-* Functions
-*/
+/* ---- Functions ---- */
 
 /* Adds show class to element and remove hide to change display value */
 function showElement(element){
