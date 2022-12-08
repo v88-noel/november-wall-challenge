@@ -36,7 +36,7 @@ let delete_node_holder = '';
 * Event Listeners
 */
 create_message_btn.addEventListener('click', ()=>showElement(create_new_message_modal));
-create_new_message_textarea.addEventListener('keyup', newMessageTextAreaKeyUp);
+create_new_message_textarea.addEventListener('keyup', (event)=>formTextAreaKeyUp(event, post_message_btn));
 post_message_btn.addEventListener('click', postMessageBtnOnClick);
 
 for( let index = 0; index < confirm_delete_btn.length; index++){
@@ -95,14 +95,6 @@ function hideModal(event){
     }
 }
 
-/* Add/Delete "disabled" in class list of element and changes disabled attribute to true/false */
-function newMessageTextAreaKeyUp(event){
-    const post_message_button_node = event.target.nextElementSibling.children[1];
-    const length_value = event.target.value.trim().length;
-    console.log(length_value);
-    changeDisabledAttribute(length_value, post_message_button_node);
-}
-
 /* Show and hide comment form */
 function toggleAddComment(comment_form){
     const class_list = comment_form.classList;
@@ -148,12 +140,50 @@ function createNewMessage(message){
     edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>updateMessage(message_clone));
     update_message_btn.addEventListener('click', ()=>updateMessage(message_clone));
     message_clone.querySelector('.comment_form').addEventListener('submit', prependComment);
-    comment_form_node.querySelector('textarea').addEventListener('keyup', (event)=>commentFormKeyUp(event, comment_form_submit_btn));
-    message_form.querySelector('textarea').addEventListener('keyup', (event)=>commentFormKeyUp(event, update_message_btn));
+    comment_form_node.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, comment_form_submit_btn));
+    message_form.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
     
     message_container.prepend(message_clone);
     updateMessageCount();
 }
+
+/**
+* Function that takes an event as an argument, prevents the default action of
+* the event, and then clones a comment template, adds event listeners to the cloned template, and then
+* prepends the cloned template to the comment container.
+*/
+function prependComment(event){
+    event.preventDefault();
+    const comment_value = event.target[0].value; 
+
+    if(comment_value.length){
+        const parent_message = event.target.closest('.messages');
+        const comment_form_submit_btn = parent_message.querySelector('.comment_form .post_comment_btn');
+        const comment_form_text_area = parent_message.querySelector('.comment_form textarea');
+        const parent_comment_container = parent_message.querySelector('.comment_container');
+        parent_comment_container.classList.remove('hide');
+
+        const comment_clone = comment_template.cloneNode(true);
+        comment_clone.querySelector('form textarea').value = comment_value;
+        comment_clone.classList.remove('hide');
+
+        const button_container = comment_clone.querySelector('.buttons_container');
+        const message_form = comment_clone.querySelector('.message_form');
+        const edit_message_container = comment_clone.querySelector('.edit_message_container');
+        const update_message_btn = comment_clone.querySelector('.update_message_btn');
+
+        comment_clone.querySelector('.buttons_container .delete').addEventListener('click', ()=>showDeleteModal(comment_clone));
+        comment_clone.querySelector('.buttons_container .edit').addEventListener('click', ()=>showEditFunction(button_container, comment_clone));
+        edit_message_container.querySelector('.update_message_btn').addEventListener('click', ()=>updateMessage(comment_clone));
+        edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>updateMessage(comment_clone));
+        message_form.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
+
+        parent_comment_container.prepend(comment_clone);
+        resetForm(comment_form_text_area, comment_form_submit_btn);
+        updateCommentCount(parent_message);
+    }
+}
+
 
 /**
  * It takes a button container and a clone as arguments, and then it hides the button container, shows
@@ -164,7 +194,7 @@ function showEditFunction(button_container, clone){
     const clone_textarea = clone.querySelector('textarea');
     const edit_message_container = clone.querySelector('.edit_message_container');
 
-    if(class_list.contains('inactive')){
+    if(!class_list.contains('active')){
         hideElement(button_container);
         showElement(edit_message_container);
         clone.classList.add('active');
@@ -176,13 +206,14 @@ function showEditFunction(button_container, clone){
 /* When the user clicks the update button, the message is updated and the message form is disabled. */
 function updateMessage(message_container){
     const message_textarea = message_container.querySelector('.message_form textarea');
-    
+    const edit_message_container = message_container.querySelector('.edit_message_container');
+    const buttons_container = message_container.querySelector('.buttons_container')
+
     if(message_textarea.value.length > 0){
-        message_container.classList.add('inactive');
         message_container.classList.remove('active');
         message_textarea.disabled = true;
-        hideElement(message_container.querySelector('.edit_message_container'));
-        showElement(message_container.querySelector('.buttons_container'));
+        hideElement(edit_message_container);
+        showElement(buttons_container);
     }
 }
 
@@ -206,44 +237,6 @@ function confirmDeleteOnClick(event){
         }
     }
 }
-
-/**
-* Function that takes an event as an argument, prevents the default action of
-* the event, and then clones a comment template, adds event listeners to the cloned template, and then
-* prepends the cloned template to the comment container.
-*/
-function prependComment(event){
-    event.preventDefault();
-    const comment_value = event.target[0].value; 
-
-    if(comment_value.length){
-        const parent_message = event.target.closest('.messages');
-        const comment_form_submit_btn = parent_message.querySelector('.comment_form .post_comment_btn');
-        const comment_form_text_area = parent_message.querySelector('.comment_form textarea');
-        const parent_comment_container = parent_message.querySelector('.comment_container');
-        parent_comment_container.classList.remove('hide');
-
-        const comment_clone = comment_template.cloneNode(true);
-        comment_clone.classList.remove('hide');
-
-        const button_container = comment_clone.querySelector('.buttons_container');
-        const message_form = comment_clone.querySelector('.message_form');
-        const edit_message_container = comment_clone.querySelector('.edit_message_container');
-        const update_message_btn = comment_clone.querySelector('.update_message_btn');
-
-        comment_clone.querySelector('form textarea').value = comment_value;
-        comment_clone.querySelector('.buttons_container .delete').addEventListener('click', ()=>showDeleteModal(comment_clone));
-        comment_clone.querySelector('.buttons_container .edit').addEventListener('click', ()=>showEditFunction(button_container, comment_clone));
-        edit_message_container.querySelector('.update_message_btn').addEventListener('click', ()=>updateMessage(comment_clone));
-        edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>updateMessage(comment_clone));
-        message_form.querySelector('textarea').addEventListener('keyup', (event)=>commentFormKeyUp(event, update_message_btn));
-
-        parent_comment_container.prepend(comment_clone);
-        resetForm(comment_form_text_area, comment_form_submit_btn);
-        updateCommentCount(parent_message);
-    }
-}
-
 
 /* Updates message_number span count after adding/deleting messages */
 function updateMessageCount(){
@@ -296,10 +289,10 @@ function changeDisabledAttribute(textarea_length, button_to_be_disabled){
 }
 
 /**
-* If the length of the textarea is greater than 0, then remove the disabled attribute from the submit
-* button.
-*/
-function commentFormKeyUp(event, comment_form_submit_btn){
+ * If the length of the textarea is greater than 0, then the submit button is enabled. 
+ * If the length of the textarea is 0, then the submit button is disabled.
+ */
+function formTextAreaKeyUp(event, comment_form_submit_btn){
     const textarea_length = event.target.value.trim().length;
     changeDisabledAttribute(textarea_length, comment_form_submit_btn);
 }

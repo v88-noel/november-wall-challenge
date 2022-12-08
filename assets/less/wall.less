@@ -13,13 +13,12 @@ body{
         background-color: @white_color;
         border-radius: 6px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
-        height: 121px;
         padding: 20px;
 
         section{  
             align-items: center;
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             justify-content: center;
 
             h1{
@@ -75,14 +74,14 @@ body{
                 padding: 20px;
                 
                 textarea{
-                    background-color: @textarea_bg_color;
+                    background-color: transparent;
                     border-radius: 6px;
-                    border: 1px solid @message_border_color;
+                    border: none;
                     color: @primary_color;
                     display: block;
-                    padding: 20px;
+                    padding: 0;
                     resize: none;
-                    width: 100%;
+                    width: 100%;    
 
                     &:focus{
                         outline: none;
@@ -151,14 +150,6 @@ body{
                     border: 1px solid @message_border_color;
                     margin-top: 20px;
                     padding: 20px;
-                }
-            }
-
-            .inactive{
-                textarea{
-                    background-color: transparent;
-                    border: none;
-                    padding: 0;
                 }
             }
 
@@ -232,10 +223,6 @@ body{
         width: 400px;
 
         .close_modal_btn{
-            span{
-                .icons;
-                background: url('/assets/images/icons_group.png') no-repeat -90px -5px;
-            }
             background-color: transparent;
             border: none;
             cursor: pointer;
@@ -243,6 +230,10 @@ body{
             right: 10px;
             top: 10px;
 
+            span{
+                .icons;
+                background: url('/assets/images/icons_group.png') no-repeat -90px -5px;
+            }
         }
 
         h1{
@@ -323,7 +314,7 @@ body{
                 align-items: center;
                 border-radius: 6px;
                 display: inherit;
-                flex-wrap: wrap;
+                flex-direction: row;
                 justify-content: space-between;
                 width: 100%;
     
@@ -350,7 +341,7 @@ body{
             .create_message_container{
                 align-items: center;
                 display: flex;
-                justify-content:space-between;
+                justify-content: space-between;
                 
                 button{
                     margin-top: 0;
@@ -411,6 +402,7 @@ body{
 @media only screen and (min-width: 1280px) {
     .container{
         header{
+            height: 121px;
             section{
                 width: 1280px;
             }
@@ -418,7 +410,7 @@ body{
 
         main{
             margin: 50px 80px;
-            margin:50px auto;
+            margin: 50px auto;
             max-width: 1280px;
             padding: 70px 50px;
 
@@ -444,8 +436,8 @@ body{
     .create_new_message_modal{
         .modal_panel{
             height: 423px;
+            padding: 40px 50px 50px;
             width: 937px;
-            padding: 40px 50px 50px 50px;
 
             h1{
                 margin-bottom: 40px;   
