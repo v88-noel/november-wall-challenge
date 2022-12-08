@@ -11,8 +11,10 @@ const confirm_password_error = document.getElementById('confirm_password_error')
 /* Form */
 const sign_up = document.getElementById('sign_up');
 
+sign_up.addEventListener('submit', validateRegistrationForm); 
+
 /* Triggered when user submitted the form/clicked 'Sign up' button */
-sign_up.addEventListener('submit', function(event){
+function validateRegistrationForm(event){
     event.preventDefault();
 
     let error_count = 0;
@@ -62,8 +64,7 @@ sign_up.addEventListener('submit', function(event){
     if(error_count <= 0){
         window.location.href = 'index.html';
     }
-});
-
+}
 /* Shows error message */
 function showError(error_element, input_element, message){
     error_element.classList.add('show');

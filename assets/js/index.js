@@ -9,8 +9,10 @@ const password_error = document.getElementById('password_error');
 /* Form */
 const login_form = document.getElementById('login_form');
 
+login_form.addEventListener('submit', validateLoginForm);
+
 /* Triggered when user submitted the form/clicked 'Sign In' button */
-login_form.addEventListener('submit', function(event){
+function validateLoginForm(event){
     event.preventDefault();
 
     let error_count = 0;
@@ -51,7 +53,7 @@ login_form.addEventListener('submit', function(event){
     if(error_count <= 0){
         window.location.href = 'wall.html';
     }
-});
+}
 
 /* Shows error message */
 function ShowError(error_element, input_element, message){

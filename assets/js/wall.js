@@ -305,9 +305,7 @@ function changeDisabledAttribute(textarea_length, button_to_disable){
     }
 }
 
-/**
-* Function that helps bind keyup event listener to form submit buttons in create new comment/message as well as edit comment/message. 
-*/
+/* Function that helps bind keyup event listener to form submit buttons in create new comment/message as well as edit comment/message. */
 function formTextAreaKeyUp(event, form_submit_btn){
     const textarea_length = event.target.value.trim().length;
     changeDisabledAttribute(textarea_length, form_submit_btn);
