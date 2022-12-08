@@ -175,8 +175,8 @@ function prependComment(event){
     const edit_message_container = comment_clone.querySelector('.edit_message_container');
     const update_message_btn = comment_clone.querySelector('.update_message_btn');
 
-    comment_clone.querySelector('.buttons_container .delete').addEventListener('click', ()=>showDeleteModal(comment_clone));
-    comment_clone.querySelector('.buttons_container .edit').addEventListener('click', ()=>showEditFunction(button_container, comment_clone));
+    button_container.querySelector('.delete').addEventListener('click', ()=>showDeleteModal(comment_clone));
+    button_container.querySelector('.edit').addEventListener('click', ()=>showEditFunction(button_container, comment_clone));
     edit_message_container.querySelector('.update_message_btn').addEventListener('click', ()=>updateMessage(comment_clone));
     edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>cancelUpdateMessage(comment_clone));
     edit_message_container.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
