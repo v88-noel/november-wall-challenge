@@ -132,7 +132,7 @@ function postMessageBtnOnClick(event){
 function createNewMessage(message){
     const message_clone = message_template.cloneNode(true);
     message_clone.classList.remove('hide');
-    message_clone.querySelector('textarea').innerText = message;
+    message_clone.querySelector('.message_form p').innerText = message;
     const comment_form_node = message_clone.querySelector('.comment_form');
     const message_form = message_clone.querySelector('.message_form');
     const comment_form_submit_btn = comment_form_node.querySelector('.post_comment_btn');
@@ -143,11 +143,11 @@ function createNewMessage(message){
     button_container.querySelector('.comment').addEventListener('click', ()=>toggleAddComment(comment_form_node));
     button_container.querySelector('.delete').addEventListener('click', ()=>showDeleteModal(message_clone));
     button_container.querySelector('.edit').addEventListener('click', ()=>showEditFunction(button_container, message_clone));
-    edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>updateMessage(message_clone));
+    edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>cancelUpdateMessage(message_clone));
     update_message_btn.addEventListener('click', ()=>updateMessage(message_clone));
     message_clone.querySelector('.comment_form').addEventListener('submit', prependComment);
     comment_form_node.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, comment_form_submit_btn));
-    message_form.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
+    message_clone.querySelector('.edit_message_container textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
     
     message_container.prepend(message_clone);
     updateMessageCount();
@@ -162,33 +162,31 @@ function createNewMessage(message){
 function prependComment(event){
     event.preventDefault();
     const comment_value = event.target[0].value; 
+    const parent_message = event.target.closest('.messages');
+    const comment_form_submit_btn = parent_message.querySelector('.comment_form .post_comment_btn');
+    const comment_form_text_area = parent_message.querySelector('.comment_form textarea');
+    const parent_comment_container = parent_message.querySelector('.comment_container');
+    parent_comment_container.classList.remove('hide');
 
-    if(comment_value.length){
-        const parent_message = event.target.closest('.messages');
-        const comment_form_submit_btn = parent_message.querySelector('.comment_form .post_comment_btn');
-        const comment_form_text_area = parent_message.querySelector('.comment_form textarea');
-        const parent_comment_container = parent_message.querySelector('.comment_container');
-        parent_comment_container.classList.remove('hide');
+    const comment_clone = comment_template.cloneNode(true);
+    comment_clone.querySelector('.message_form p').innerText = comment_value;
+    comment_clone.classList.remove('hide');
 
-        const comment_clone = comment_template.cloneNode(true);
-        comment_clone.querySelector('form textarea').value = comment_value;
-        comment_clone.classList.remove('hide');
+    const button_container = comment_clone.querySelector('.buttons_container');
+    const message_form = comment_clone.querySelector('.message_form');
+    const edit_message_container = comment_clone.querySelector('.edit_message_container');
+    const update_message_btn = comment_clone.querySelector('.update_message_btn');
 
-        const button_container = comment_clone.querySelector('.buttons_container');
-        const message_form = comment_clone.querySelector('.message_form');
-        const edit_message_container = comment_clone.querySelector('.edit_message_container');
-        const update_message_btn = comment_clone.querySelector('.update_message_btn');
+    comment_clone.querySelector('.buttons_container .delete').addEventListener('click', ()=>showDeleteModal(comment_clone));
+    comment_clone.querySelector('.buttons_container .edit').addEventListener('click', ()=>showEditFunction(button_container, comment_clone));
+    edit_message_container.querySelector('.update_message_btn').addEventListener('click', ()=>updateMessage(comment_clone));
+    edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>cancelUpdateMessage(comment_clone));
+    comment_clone.querySelector('.edit_message_container textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
 
-        comment_clone.querySelector('.buttons_container .delete').addEventListener('click', ()=>showDeleteModal(comment_clone));
-        comment_clone.querySelector('.buttons_container .edit').addEventListener('click', ()=>showEditFunction(button_container, comment_clone));
-        edit_message_container.querySelector('.update_message_btn').addEventListener('click', ()=>updateMessage(comment_clone));
-        edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>updateMessage(comment_clone));
-        message_form.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
-
-        parent_comment_container.prepend(comment_clone);
-        resetForm(comment_form_text_area, comment_form_submit_btn);
-        updateCommentCount(parent_message);
-    }
+    parent_comment_container.prepend(comment_clone);
+    resetForm(comment_form_text_area, comment_form_submit_btn);
+    updateCommentCount(parent_message);
+    
 }
 
 /**
@@ -200,30 +198,39 @@ function prependComment(event){
 * @author Noel
 */
 function showEditFunction(button_container, clone){
-    const class_list = clone.classList;
-    const clone_textarea = clone.querySelector('textarea');
     const edit_message_container = clone.querySelector('.edit_message_container');
-
-    if(!class_list.contains('active')){
-        hideElement(button_container);
-        showElement(edit_message_container);
-        clone.classList.add('active');
-        clone_textarea.disabled = false;
-    }
+    const message_form = clone.querySelector('.message_form');
+    const message_text = message_form.querySelector('p').innerText;
+    const edit_message_texarea = edit_message_container.querySelector('textarea');
+    
+    edit_message_texarea.value = message_text;
+    hideElement(button_container);
+    hideElement(message_form);
+    showElement(edit_message_container);
 }
 
 /* When the user clicks the update button, the message is updated and the message form is disabled. */
-function updateMessage(message_container){
-    const message_textarea = message_container.querySelector('.message_form textarea');
+function cancelUpdateMessage(message_container){
+    const message_form = message_container.querySelector('.message_form');
+    const buttons_container = message_container.querySelector('.buttons_container');
     const edit_message_container = message_container.querySelector('.edit_message_container');
-    const buttons_container = message_container.querySelector('.buttons_container')
 
-    if(message_textarea.value.length > 0){
-        message_container.classList.remove('active');
-        message_textarea.disabled = true;
-        hideElement(edit_message_container);
-        showElement(buttons_container);
-    }
+    hideElement(edit_message_container);
+    showElement(message_form);
+    showElement(buttons_container);
+}
+
+function updateMessage(message_container){
+    const edit_message_container = message_container.querySelector('.edit_message_container');
+    const message_form = message_container.querySelector('.message_form');
+    const buttons_container = message_container.querySelector('.buttons_container');
+    const textarea_value = edit_message_container.querySelector('textarea').value;
+    const message_paragraph = message_form.querySelector('p');
+    message_paragraph.innerText = textarea_value;
+
+    showElement(message_form);
+    showElement(buttons_container);
+    hideElement(edit_message_container);
 }
 
 /**

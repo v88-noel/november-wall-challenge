@@ -73,20 +73,29 @@ body{
                 border: 1px solid @message_border_color;
                 margin-top: 20px;
                 padding: 20px;
-                
+
                 textarea{
-                    background-color: transparent;
+                    background-color: @textarea_bg_color;
                     border-radius: 6px;
-                    border: none;
-                    color: @primary_color;
+                    border: 1px solid @message_border_color;
                     display: block;
-                    padding: 0;
+                    padding: 10px;
                     resize: none;
-                    width: 100%;    
+                    width: 100%;
 
                     &:focus{
                         outline: none;
                     }
+                }
+                
+                .message_form{
+                    p{
+                        font: 16px/24px Poppins-Light;
+                        color: @primary_color;
+                        padding: 0;  
+                        margin-bottom: 19px;
+                    }
+
                 }
 
                 .buttons_container{
@@ -119,13 +128,33 @@ body{
                 .edit_message_container{
                     display: flex;
                     margin: 20px 0 0 auto;
-                    width: fit-content;
 
                     button{
                         background-color: transparent;
                         border: none;
                         cursor: pointer;
                     }
+
+                    textarea{
+                        background-color: @textarea_bg_color;
+                        border-radius: 6px;
+                        border: 1px solid @message_border_color;
+                        display: block;
+                        padding: 10px;
+                        resize: none;
+                        width: 100%;
+    
+                        &:focus{
+                            outline: none;
+                        }
+                    }
+
+                    .edit_container_buttons_container{
+                        display: flex;
+                        justify-content: flex-end;
+                        margin-top: 20px;
+                    }
+                    
 
                     .update_message_btn{
                         .btn;
