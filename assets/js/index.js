@@ -8,7 +8,6 @@ const password_error = document.getElementById('password_error');
 
 /* Form */
 const login_form = document.getElementById('login_form');
-
 login_form.addEventListener('submit', validateLoginForm);
 
 /* Triggered when user submitted the form/clicked 'Sign In' button */

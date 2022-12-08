@@ -102,8 +102,9 @@ function toggleAddComment(comment_form){
 }
 
 /**
-* When the user clicks the post message button, the function will check if the message value is
-* greater than 0, if it is, it will create a new message, reset the form, and hide the modal.
+* DOCU: When the user clicks the post message button, the function will check if the message value is <br>
+* greater than 0, if it is, it will create a new message, reset the form, and hide the modal. <br>
+* Triggered: When user clicked input a character in modal textarea then clicked "Post Message" button. 
 * @function 
 * @param {object} event - the event object
 * @author Noel
@@ -122,8 +123,7 @@ function postMessageBtnOnClick(event){
 
 /**
 * DOCU: It creates a new message, adds event listeners to the buttons, and prepends the message to the message container. <br>
-* Triggered: When user when user input character in textarea and clicked "Post Message" which will then fire postMessageBtnOnClick function <br>
-* that will triggered this function <br> 
+* Triggered: When postMessageBtnOnClick function is triggered by user who entered a character in modal textarea.<br>
 * @function
 * @param {string} message - the message that the user has typed in the create new message textarea
 * @author Noel
@@ -153,6 +153,7 @@ function createNewMessage(message){
 
 /**
 * Function that clones comment template, removes the hide class from the clone, and then prepends the clone to the comment_container. <br>
+* Triggered: When user clicked "Post Comment" button. <br>
 * @function
 * @param {object} event - the event object
 * @author Noel
@@ -186,8 +187,9 @@ function prependComment(event){
 }
 
 /**
-* It takes a button container and a clone of the message/comment container as arguments, and then it hides the
-* button container and shows the edit message container.
+* It takes a button container and a clone of the message/comment container as arguments, <br>
+* and then it hides the button container and shows the edit message container.  <br>
+* Triggered: When user clicked edit button in comment/message buttons container.  
 * @function
 * @param {object} button_container - The container that holds the buttons.
 * @param {object} clone - The clone of the message/comment that is being edited.
