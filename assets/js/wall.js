@@ -39,11 +39,11 @@ create_message_btn.addEventListener('click', ()=>showElement(create_new_message_
 create_new_message_textarea.addEventListener('keyup', newMessageTextAreaKeyUp);
 post_message_btn.addEventListener('click', postMessageBtnOnClick);
 
-for(let index = 0; index < confirm_delete_btn.length; index++){
+for( let index = 0; index < confirm_delete_btn.length; index++){
     confirm_delete_btn[index].addEventListener('click', confirmDeleteOnClick);
 }
 
-for(let index = 0; index < close_modal.length; index++){
+for( let index = 0; index < close_modal.length; index++){
     close_modal[index].addEventListener('click', hideModal);
 }
 
@@ -98,7 +98,8 @@ function hideModal(event){
 /* Add/Delete "disabled" in class list of element and changes disabled attribute to true/false */
 function newMessageTextAreaKeyUp(event){
     const post_message_button_node = event.target.nextElementSibling.children[1];
-    const length_value = event.target.value.length;
+    const length_value = event.target.value.trim().length;
+    console.log(length_value);
     changeDisabledAttribute(length_value, post_message_button_node);
 }
 
@@ -299,11 +300,6 @@ function changeDisabledAttribute(textarea_length, button_to_be_disabled){
 * button.
 */
 function commentFormKeyUp(event, comment_form_submit_btn){
-    const textarea_length = event.target.value.length;
+    const textarea_length = event.target.value.trim().length;
     changeDisabledAttribute(textarea_length, comment_form_submit_btn);
 }
-
-/**
-* When the delete button is clicked, show the delete confirmation button and store the parent node of
-* the deleted button in a variable.
-*/
