@@ -33,7 +33,7 @@ const comment_template = document.querySelector('.comments');
 let delete_node_holder = '';
 
 /**
-* Event Listeners
+* Onload event Listeners
 */
 create_message_btn.addEventListener('click', ()=>showElement(create_new_message_modal));
 create_new_message_textarea.addEventListener('keyup', (event)=>formTextAreaKeyUp(event, post_message_btn));
@@ -82,15 +82,15 @@ function showDeleteModal(content_to_delete){
     }
 }
 
-/* Hides modal containing close_modal class*/
+/* Hides modal containing close_modal class */
 function hideModal(event){
     event.preventDefault();
     const modal = event.target.closest('.modal');
     hideElement(modal);
 
     if(modal.classList.contains('create_new_message_modal')){
-        const modal_textarea = modal.querySelector('.create_new_message_modal textarea');
-        const post_message_btn = modal.querySelector('.create_new_message_modal .post_message_btn');
+        const modal_textarea = modal.querySelector('textarea');
+        const post_message_btn = modal.querySelector('.post_message_btn');
         resetForm(modal_textarea, post_message_btn);
     }
 }
@@ -232,9 +232,9 @@ function updateMessage(message_container){
     }
 }
 
-/** 
-* Adding an event listener to the confirm delete button. When the button is clicked,
-* the code will remove the node stored in delete_node_holder and then hide the modal. 
+/**
+* If the user clicks the confirm delete button, then delete the node that was stored in the
+* delete_node_holder variable and hide the modal.
 */
 function confirmDeleteOnClick(event){
     event.preventDefault();
