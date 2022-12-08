@@ -132,9 +132,8 @@ function postMessageBtnOnClick(event){
 function createNewMessage(message){
     const message_clone = message_template.cloneNode(true);
     message_clone.classList.remove('hide');
-    message_clone.querySelector('.message_form p').innerText = message;
+    message_clone.querySelector('.message_wrapper p').innerText = message;
     const comment_form_node = message_clone.querySelector('.comment_form');
-    const message_form = message_clone.querySelector('.message_form');
     const comment_form_submit_btn = comment_form_node.querySelector('.post_comment_btn');
     const button_container = message_clone.querySelector('.buttons_container');
     const edit_message_container = message_clone.querySelector('.edit_message_container');
@@ -169,11 +168,10 @@ function prependComment(event){
     parent_comment_container.classList.remove('hide');
 
     const comment_clone = comment_template.cloneNode(true);
-    comment_clone.querySelector('.message_form p').innerText = comment_value;
+    comment_clone.querySelector('.message_wrapper p').innerText = comment_value;
     comment_clone.classList.remove('hide');
 
     const button_container = comment_clone.querySelector('.buttons_container');
-    const message_form = comment_clone.querySelector('.message_form');
     const edit_message_container = comment_clone.querySelector('.edit_message_container');
     const update_message_btn = comment_clone.querySelector('.update_message_btn');
 
@@ -199,36 +197,36 @@ function prependComment(event){
 */
 function showEditFunction(button_container, clone){
     const edit_message_container = clone.querySelector('.edit_message_container');
-    const message_form = clone.querySelector('.message_form');
-    const message_text = message_form.querySelector('p').innerText;
+    const message_wrapper = clone.querySelector('.message_wrapper');
+    const message_text = message_wrapper.querySelector('p').innerText;
     const edit_message_texarea = edit_message_container.querySelector('textarea');
     
     edit_message_texarea.value = message_text;
     hideElement(button_container);
-    hideElement(message_form);
+    hideElement(message_wrapper);
     showElement(edit_message_container);
 }
 
 /* When the user clicks the update button, the message is updated and the message form is disabled. */
 function cancelUpdateMessage(message_container){
-    const message_form = message_container.querySelector('.message_form');
+    const message_wrapper = message_container.querySelector('.message_wrapper');
     const buttons_container = message_container.querySelector('.buttons_container');
     const edit_message_container = message_container.querySelector('.edit_message_container');
 
     hideElement(edit_message_container);
-    showElement(message_form);
+    showElement(message_wrapper);
     showElement(buttons_container);
 }
 
 function updateMessage(message_container){
     const edit_message_container = message_container.querySelector('.edit_message_container');
-    const message_form = message_container.querySelector('.message_form');
+    const message_wrapper = message_container.querySelector('.message_wrapper');
     const buttons_container = message_container.querySelector('.buttons_container');
     const textarea_value = edit_message_container.querySelector('textarea').value;
-    const message_paragraph = message_form.querySelector('p');
+    const message_paragraph = message_wrapper.querySelector('p');
     message_paragraph.innerText = textarea_value;
 
-    showElement(message_form);
+    showElement(message_wrapper);
     showElement(buttons_container);
     hideElement(edit_message_container);
 }
