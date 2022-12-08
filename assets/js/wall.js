@@ -101,7 +101,6 @@ function toggleAddComment(comment_form){
     }
 }
 
-
 /**
 * When the user clicks the post message button, the function will check if the message value is
 * greater than 0, if it is, it will create a new message, reset the form, and hide the modal.
@@ -142,11 +141,11 @@ function createNewMessage(message){
     button_container.querySelector('.comment').addEventListener('click', ()=>toggleAddComment(comment_form_node));
     button_container.querySelector('.delete').addEventListener('click', ()=>showDeleteModal(message_clone));
     button_container.querySelector('.edit').addEventListener('click', ()=>showEditFunction(button_container, message_clone));
+    edit_message_container.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
     edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>cancelUpdateMessage(message_clone));
     update_message_btn.addEventListener('click', ()=>updateMessage(message_clone));
     message_clone.querySelector('.comment_form').addEventListener('submit', prependComment);
     comment_form_node.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, comment_form_submit_btn));
-    message_clone.querySelector('.edit_message_container textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
     
     message_container.prepend(message_clone);
     updateMessageCount();
@@ -179,12 +178,11 @@ function prependComment(event){
     comment_clone.querySelector('.buttons_container .edit').addEventListener('click', ()=>showEditFunction(button_container, comment_clone));
     edit_message_container.querySelector('.update_message_btn').addEventListener('click', ()=>updateMessage(comment_clone));
     edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>cancelUpdateMessage(comment_clone));
-    comment_clone.querySelector('.edit_message_container textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
+    edit_message_container.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
 
     parent_comment_container.prepend(comment_clone);
     resetForm(comment_form_text_area, comment_form_submit_btn);
     updateCommentCount(parent_message);
-    
 }
 
 /**
