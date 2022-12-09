@@ -259,7 +259,7 @@ function updateMessageCount(){
     const message_count = message_container.children.length - 3;
     message_number.innerText = message_count;
 
-    if(message_count){
+    if(message_count <=0){
         showElement(empty_message_container);
     }
     else{
