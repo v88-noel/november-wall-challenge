@@ -71,7 +71,8 @@ function showDeleteModal(content_to_delete){
 
     if(content_class_list.contains('messages')){
         showElement(remove_message);
-    }else{
+    }
+    else{
         showElement(remove_comment);
     }
 }
