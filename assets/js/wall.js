@@ -37,7 +37,7 @@ for (let modal_panel_form_index = 0;  modal_panel_form_index < modal_panel_form.
     modal_panel_form[modal_panel_form_index].addEventListener('submit', submitDelete);
 }
 
-for( let close_modal_index = 0; index < close_modal_index.length; close_modal_index++){
+for( let close_modal_index = 0; close_modal_index < close_modal.length; close_modal_index++){
     close_modal[close_modal_index].addEventListener('click', hideModal);
 }
 
@@ -132,16 +132,22 @@ function postMessageBtnOnClick(event){
 * @author Noel
 */
 function createNewMessage(message){
+    /* Creating a new message_id_number, cloning the message_template, and setting the
+    message_id_number attribute to the new message_id_number. It is also setting the innerText of
+    the message_wrapper p element to the message. */
     const message_id_number = new Date().valueOf();
     const message_clone = message_template.cloneNode(true);
     message_clone.setAttribute('message_id_number', message_id_number);
     message_clone.querySelector('.message_wrapper p').innerText = message;
+
+    /* The above code is selecting the elements from the message_clone. */
     const comment_form_node = message_clone.querySelector('.comment_form');
     const comment_form_submit_btn = comment_form_node.querySelector('.post_comment_btn');
     const button_container = message_clone.querySelector('.buttons_container');
     const edit_message_container = message_clone.querySelector('.edit_message_container');
     const update_message_btn = message_clone.querySelector('.update_message_btn');
 
+    /* The above code is adding event listeners to the elements of the message clone buttons/forms. */
     button_container.querySelector('.comment').addEventListener('click', ()=>toggleAddComment(comment_form_node));
     button_container.querySelector('.delete').addEventListener('click', ()=>showDeleteModal(message_clone));
     button_container.querySelector('.edit').addEventListener('click', ()=>showEditFunction(button_container, message_clone));
@@ -151,6 +157,7 @@ function createNewMessage(message){
     message_clone.querySelector('.comment_form').addEventListener('submit', prependComment);
     comment_form_node.querySelector('.comment_form_textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, comment_form_submit_btn));
     
+    /* Creating a new message and adding it to the message container. */
     message_container.prepend(message_clone);
     updateMessageCount();
 }
@@ -164,6 +171,9 @@ function createNewMessage(message){
 */
 function prependComment(event){
     event.preventDefault();
+
+    /* Getting the value of the textarea, the id of the comment, the parent message, the submit button,
+    the textarea, and the comment container. */
     const comment_value = event.target[0].value; 
     const comment_id = new Date().valueOf();
     const parent_message = event.target.closest('.messages');
@@ -172,20 +182,27 @@ function prependComment(event){
     const parent_comment_container = parent_message.querySelector('.comment_container');
     parent_comment_container.classList.remove('hide');
    
+   /* Cloning the comment template and setting the comment id number and the comment value. */
     const comment_clone = comment_template.cloneNode(true);
     comment_clone.setAttribute('comment_id_number', comment_id);
     comment_clone.querySelector('.message_wrapper p').innerText = comment_value;
+
+   /* The above code is selecting the elements from the comment_clone. */
     const button_container = comment_clone.querySelector('.buttons_container');
     const edit_message_container = comment_clone.querySelector('.edit_message_container');
     const update_message_btn = comment_clone.querySelector('.update_message_btn');
-
+    
+    /* The above code is adding event listeners to the buttons and textarea. */
     button_container.querySelector('.delete').addEventListener('click', ()=>showDeleteModal(comment_clone));
     button_container.querySelector('.edit').addEventListener('click', ()=>showEditFunction(button_container, comment_clone));
     edit_message_container.addEventListener('submit', (event)=>updateMessage(event, comment_clone));
     edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>cancelUpdateMessage(comment_clone));
-    edit_message_container.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
+    edit_message_container.querySelector('.edit_message_textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
 
+    /* Taking the comment_clone and prepending it to the parent_comment_container. */
     parent_comment_container.prepend(comment_clone);
+
+    /* Resetting the form and updating the comment count. */
     resetForm(comment_form_text_area, comment_form_submit_btn);
     updateCommentCount(parent_message);
 }
@@ -208,9 +225,7 @@ function showEditFunction(button_container, clone){
     edit_message_texarea.value = message_text;
     hideElement(button_container);
     hideElement(message_wrapper);
-    edit_message_container.classList.add('show_flex');
-    edit_message_container.classList.remove('hide');
-    // showElement(edit_message_container);
+    showElement(edit_message_container, 'show_flex');
 }
 
 /* When the user clicks the update button, the message is updated and the message form is disabled. */
@@ -224,13 +239,17 @@ function cancelUpdateMessage(message_container){
     showElement(buttons_container);
 }
 
-function updateMessage(event ,message_container){
+/**
+ * It takes an event, and a message container as arguments, and then it updates the message paragraph
+ * with the value of the textarea.
+ */
+function updateMessage(event, message_container){
     event.preventDefault();
 
     const edit_message_container = message_container.querySelector('.edit_message_container');
     const message_wrapper = message_container.querySelector('.message_wrapper');
     const buttons_container = message_container.querySelector('.buttons_container');
-    const textarea_value = edit_message_container.querySelector('textarea').value;
+    const textarea_value = edit_message_container.querySelector('.edit_message_textarea').value;
     const message_paragraph = message_wrapper.querySelector('p');
     message_paragraph.innerText = textarea_value;
 
