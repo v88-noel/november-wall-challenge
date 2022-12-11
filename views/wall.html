@@ -14,7 +14,7 @@
     <div class="container">
         <header>
             <section>
-                <h1><a href="#">The Wall Assignment</a></h1>
+                <h1><a href="/views/wall.html">The Wall Assignment</a></h1>
                 <div>
                     <p>Welcome, Noel Dasco!</p>
                     <a href="index.html">Logout</a>
@@ -24,95 +24,98 @@
         <main>
             <div id="create_message_container">
                 <p><span id="message_number">0</span> messages arrange by latest posted</p>
-                <button id="create_message_btn">Create Message</button>
+                <button type="submit" id="create_message_btn">Create Message</button>
             </div>
             <ul id="message_container">
-                <!-- Start of Message template -->
-                <li class="messages hide">
-                    <div class="message_wrapper">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, consequuntur placeat? Ducimus totam, provident fugiat ea porro enim quia nam molestiae fuga, blanditiis autem? Voluptatibus, sequi recusandae? Suscipit, accusantium necessitatibus?</p>
-                    </div>
-                    <div class="buttons_container">
-                        <button class="comment"><span class="comment_icon"></span><span class="comment_count">0</span> comment</button>
-                        <button class="edit active"><span class="edit_icon"></span>Edit</button>
-                        <button class="delete"><span class="delete_icon"></span>Delete</button>
-                        <button><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</button>
-                    </div>
-                    <div class="edit_message_container hide">
-                        <textarea></textarea>
-                        <div class="edit_message_buttons_container">
-                            <button class="cancel_update">Cancel</button>
-                            <button class="update_message_btn"> Update Message</button>
-                        </div>
-                    </div>
-                    <form class="comment_form active hide">
-                        <textarea placeholder="Type your comment here."></textarea>
-                        <button class="post_comment_btn disabled" type="submit" disabled>Post Comment</button>
-                    </form>
-                    <div class="comment_container hide">
-                    </div>
-                </li>
-                <!-- End of Message template -->
-                <!-- Start of comment container including form -->
-                <div class="comments hide">
-                    <form class="message_wrapper">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, consequuntur placeat? Ducimus totam, provident fugiat ea porro enim quia nam molestiae fuga, blanditiis autem? Voluptatibus, sequi recusandae? Suscipit, accusantium necessitatibus?</p>
-                    </form>
-                    <div class="buttons_container">
-                        <button class="edit active"><span class="edit_icon"></span>Edit</button>
-                        <button class="delete"><span class="delete_icon"></span>Delete</button>
-                        <button><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</button>
-                    </div>
-                    <div class="edit_message_container hide">
-                        <textarea></textarea>
-                        <div class="edit_message_buttons_container">
-                            <button class="cancel_update">Cancel</button>
-                            <button class="update_message_btn"> Update Message</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- End of comment container including form -->
-                <div class="empty_message_container show">
-                    <img src="/assets/images/Vector.png" alt="Empty message icon">
-                    <p>No Posted Message Yet.</p>
-                </div>
             </ul>
+            <div id="empty_message_container" class="show">
+                <img src="/assets/images/Vector.png" alt="Empty message icon">
+                <p>No Posted Message Yet.</p>
+            </div>
         </main>
     </div>
 
+    <!-- clones -->
+    <ul class="hide">
+        <!-- Start of Message template -->
+        <li class="messages" message_id_number="">
+            <div class="message_wrapper">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, consequuntur placeat? Ducimus totam, provident fugiat ea porro enim quia nam molestiae fuga, blanditiis autem? Voluptatibus, sequi recusandae? Suscipit, accusantium necessitatibus?</p>
+            </div>
+            <div class="buttons_container">
+                <button type="button" class="comment"><span class="comment_icon"></span><span class="comment_count">0</span> comment</button>
+                <button type="button" class="edit active"><span class="edit_icon"></span>Edit</button>
+                <button type="button" class="delete"><span class="delete_icon"></span>Delete</button>
+                <button type="button"><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</button>
+            </div>
+            <form class="edit_message_container hide">
+                <textarea class="edit_message_textarea"></textarea>     
+                <button type="button" class="cancel_update">Cancel</button>
+                <button type="submit" class="update_message_btn"> Update Message</button>
+            </form>
+            <form class="comment_form active hide">
+                <textarea class="comment_form_textarea" placeholder="Type your comment here."></textarea>
+                <button type="submit" class="post_comment_btn disabled" type="submit" disabled>Post Comment</button>
+            </form>
+            <ul class="comment_container hide">
+            </ul>
+        </li>
+        <!-- End of Message template -->
+
+        <!-- Start of comment container including form -->
+        <li class="comments" comment_id_number="">
+            <form class="message_wrapper">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, consequuntur placeat? Ducimus totam, provident fugiat ea porro enim quia nam molestiae fuga, blanditiis autem? Voluptatibus, sequi recusandae? Suscipit, accusantium necessitatibus?</p>
+            </form>
+            <div class="buttons_container">
+                <button type="button" class="edit active"><span class="edit_icon"></span>Edit</button>
+                <button type="button" class="delete"><span class="delete_icon"></span>Delete</button>
+                <button type="button"><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</button>
+            </div>
+            <form class="edit_message_container hide">
+                <textarea class="edit_message_textarea"></textarea>
+                <button type="button" class="cancel_update">Cancel</button>
+                <button type="submit" class="update_message_btn">Update Message</button>
+            </form>
+        </li>
+        <!-- End of comment container including form -->
+    </ul>
+
     <div class="remove_modal remove_message modal hide">
         <form class="modal_panel">
-            <button class="close_modal_btn close_modal"><span></span></button>
+            <button type="button" class="close_modal_btn close_modal"><span></span></button>
+            <input type="hidden" name="message_id" value="">
             <h2>Confirm Delete Message</h2>
             <p>Are you sure you want to remove this message ?</p>
             <p>This action cannot be undone.</p>
             <div>
-                <button class="cancel_btn close_modal">Cancel</button>
-                <button class="confirm_delete_btn">Yes, Remove it.</button>
+                <button type="button" class="cancel_btn close_modal">Cancel</button>
+                <button type="submit" class="confirm_delete_btn">Yes, Remove it.</button>
             </div>
         </form>
     </div>
 
     <div class="remove_modal remove_comment modal hide">
         <form class="modal_panel">
-            <button class="close_modal_btn close_modal"><span></span></button>
+            <button type="button" class="close_modal_btn close_modal"><span></span></button>
+            <input type="hidden" name="comment_id" value="">
             <h2>Confirm Delete Comment</h2>
             <p>Are you sure you want to remove this comment ?</p>
             <p>This action cannot be undone.</p>
             <div>
-                <button class="cancel_btn close_modal">Cancel</button>
-                <button class="confirm_delete_btn">Yes, Remove it.</button>
+                <button type="button" class="cancel_btn close_modal">Cancel</button>
+                <button type="submit" class="confirm_delete_btn">Yes, Remove it.</button>
             </div>
         </form>
     </div>
 
     <div class="create_new_message_modal modal hide">
         <form class="modal_panel">
-            <button class="close_modal_btn close_modal"><span></span></button>
+            <button type="button" class="close_modal_btn close_modal"><span></span></button>
             <h2>Create a Message</h2>
             <textarea placeholder="Type your message here" class="create_new_message_textarea"></textarea>
             <div>
-                <button class="cancel_btn close_modal">Cancel</button>
+                <button type="button" class="cancel_btn close_modal">Cancel</button>
                 <button type="submit" class="post_message_btn disabled" disabled>Post Message</button>
             </div>
         </form>

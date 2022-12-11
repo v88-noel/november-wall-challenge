@@ -2,7 +2,7 @@
 
 /* Current Number of Message Span */
 const message_number = document.getElementById('message_number');
-const empty_message_container = document.querySelector('.empty_message_container');
+const empty_message_container = document.querySelector('#empty_message_container');
 
 /* Create Message Container */
 const create_message_btn = document.getElementById('create_message_btn');
@@ -12,6 +12,7 @@ const create_new_message_modal = document.querySelector('.create_new_message_mod
 const create_new_message_textarea = document.querySelector('.create_new_message_textarea');
 const remove_message = document.querySelector('.remove_message');
 const remove_comment = document.querySelector('.remove_comment');
+const modal_panel_form = document.querySelectorAll('.modal_panel');
 
 /* Modal Buttons */
 const cancel_btn = document.querySelectorAll('.cancel_btn');
@@ -27,34 +28,31 @@ const message_container = document.getElementById('message_container');
 const message_template = document.querySelector('.messages');
 const comment_template = document.querySelector('.comments');
 
-/* Hold the node of comment/message to be deleted. */
-let delete_node_holder = '';
-
 /* ---- Onload event Listeners ---- */
 create_message_btn.addEventListener('click', ()=>showElement(create_new_message_modal));
 create_new_message_textarea.addEventListener('keyup', (event)=>formTextAreaKeyUp(event, post_message_btn));
 post_message_btn.addEventListener('click', postMessageBtnOnClick);
 
-for( let index = 0; index < confirm_delete_btn.length; index++){
-    confirm_delete_btn[index].addEventListener('click', confirmDeleteOnClick);
+for (let modal_panel_form_index = 0;  modal_panel_form_index < modal_panel_form.length; modal_panel_form_index++){
+    modal_panel_form[modal_panel_form_index].addEventListener('submit', submitDelete);
 }
 
-for( let index = 0; index < close_modal.length; index++){
-    close_modal[index].addEventListener('click', hideModal);
+for( let close_modal_index = 0; index < close_modal_index.length; close_modal_index++){
+    close_modal[close_modal_index].addEventListener('click', hideModal);
 }
 
 /* ---- Functions ---- */
 
 /* Adds show class to element and remove hide to change display value */
-function showElement(element){
-    element.classList.add('show');
+function showElement(element, class_name = "show"){
+    element.classList.add(class_name);
     element.classList.remove('hide');
 }
 
 /* Adds hide class to element and remove show to change display value */
-function hideElement(element){
+function hideElement(element, class_name = "show"){
     element.classList.add('hide');
-    element.classList.remove('show');
+    element.classList.remove(class_name);
 }
 
 /* Reset form by removing all text in textarea and set button to become disabled */
@@ -66,13 +64,15 @@ function resetForm(textarea, button){
 
 /* When the user clicks the delete button, show the delete message/comment modal. */
 function showDeleteModal(content_to_delete){
-    delete_node_holder = content_to_delete;
-    const content_class_list = content_to_delete.classList;
 
-    if(content_class_list.contains('messages')){
+    if(content_to_delete.classList.contains('messages')){
+        let message_id = content_to_delete.getAttribute('message_id_number');
+        remove_message.querySelector('input').value = message_id;
         showElement(remove_message);
     }
     else{
+        let comment_id = content_to_delete.getAttribute('comment_id_number');
+        remove_comment.querySelector('input').value = comment_id;
         showElement(remove_comment);
     }
 }
@@ -93,11 +93,14 @@ function hideModal(event){
 /* Show and hide comment form */
 function toggleAddComment(comment_form){
     const class_list = comment_form.classList;
-
+    const comment_container = comment_form.closest('.messages').querySelector('.comment_container');
+   
     if(class_list.contains('hide')){
         showElement(comment_form);
+        showElement(comment_container);
     }
     else{
+        hideElement(comment_container);
         hideElement(comment_form);
     }
 }
@@ -112,7 +115,6 @@ function toggleAddComment(comment_form){
 */
 function postMessageBtnOnClick(event){
     event.preventDefault();
-    const create_new_message_modal = event.target.closest('.create_new_message_modal');
     const message_value = create_new_message_textarea.value;
 
     if(message_value.length > 0){
@@ -130,8 +132,9 @@ function postMessageBtnOnClick(event){
 * @author Noel
 */
 function createNewMessage(message){
+    const message_id_number = new Date().valueOf();
     const message_clone = message_template.cloneNode(true);
-    message_clone.classList.remove('hide');
+    message_clone.setAttribute('message_id_number', message_id_number);
     message_clone.querySelector('.message_wrapper p').innerText = message;
     const comment_form_node = message_clone.querySelector('.comment_form');
     const comment_form_submit_btn = comment_form_node.querySelector('.post_comment_btn');
@@ -142,11 +145,11 @@ function createNewMessage(message){
     button_container.querySelector('.comment').addEventListener('click', ()=>toggleAddComment(comment_form_node));
     button_container.querySelector('.delete').addEventListener('click', ()=>showDeleteModal(message_clone));
     button_container.querySelector('.edit').addEventListener('click', ()=>showEditFunction(button_container, message_clone));
-    edit_message_container.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
+    edit_message_container.querySelector('.edit_message_textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
     edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>cancelUpdateMessage(message_clone));
-    update_message_btn.addEventListener('click', ()=>updateMessage(message_clone));
+    edit_message_container.addEventListener('submit', (event)=>updateMessage(event ,message_clone));
     message_clone.querySelector('.comment_form').addEventListener('submit', prependComment);
-    comment_form_node.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, comment_form_submit_btn));
+    comment_form_node.querySelector('.comment_form_textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, comment_form_submit_btn));
     
     message_container.prepend(message_clone);
     updateMessageCount();
@@ -162,23 +165,23 @@ function createNewMessage(message){
 function prependComment(event){
     event.preventDefault();
     const comment_value = event.target[0].value; 
+    const comment_id = new Date().valueOf();
     const parent_message = event.target.closest('.messages');
     const comment_form_submit_btn = parent_message.querySelector('.comment_form .post_comment_btn');
     const comment_form_text_area = parent_message.querySelector('.comment_form textarea');
     const parent_comment_container = parent_message.querySelector('.comment_container');
     parent_comment_container.classList.remove('hide');
-
+   
     const comment_clone = comment_template.cloneNode(true);
+    comment_clone.setAttribute('comment_id_number', comment_id);
     comment_clone.querySelector('.message_wrapper p').innerText = comment_value;
-    comment_clone.classList.remove('hide');
-
     const button_container = comment_clone.querySelector('.buttons_container');
     const edit_message_container = comment_clone.querySelector('.edit_message_container');
     const update_message_btn = comment_clone.querySelector('.update_message_btn');
 
     button_container.querySelector('.delete').addEventListener('click', ()=>showDeleteModal(comment_clone));
     button_container.querySelector('.edit').addEventListener('click', ()=>showEditFunction(button_container, comment_clone));
-    edit_message_container.querySelector('.update_message_btn').addEventListener('click', ()=>updateMessage(comment_clone));
+    edit_message_container.addEventListener('submit', (event)=>updateMessage(event, comment_clone));
     edit_message_container.querySelector('.cancel_update').addEventListener('click', ()=>cancelUpdateMessage(comment_clone));
     edit_message_container.querySelector('textarea').addEventListener('keyup', (event)=>formTextAreaKeyUp(event, update_message_btn));
 
@@ -205,7 +208,9 @@ function showEditFunction(button_container, clone){
     edit_message_texarea.value = message_text;
     hideElement(button_container);
     hideElement(message_wrapper);
-    showElement(edit_message_container);
+    edit_message_container.classList.add('show_flex');
+    edit_message_container.classList.remove('hide');
+    // showElement(edit_message_container);
 }
 
 /* When the user clicks the update button, the message is updated and the message form is disabled. */
@@ -214,12 +219,14 @@ function cancelUpdateMessage(message_container){
     const buttons_container = message_container.querySelector('.buttons_container');
     const edit_message_container = message_container.querySelector('.edit_message_container');
 
-    hideElement(edit_message_container);
+    hideElement(edit_message_container, 'show_flex');
     showElement(message_wrapper);
     showElement(buttons_container);
 }
 
-function updateMessage(message_container){
+function updateMessage(event ,message_container){
+    event.preventDefault();
+
     const edit_message_container = message_container.querySelector('.edit_message_container');
     const message_wrapper = message_container.querySelector('.message_wrapper');
     const buttons_container = message_container.querySelector('.buttons_container');
@@ -229,42 +236,41 @@ function updateMessage(message_container){
 
     showElement(message_wrapper);
     showElement(buttons_container);
-    hideElement(edit_message_container);
+    hideElement(edit_message_container, 'show_flex');
 }
 
-/**
-* If the user clicks the confirm delete button, then delete the node that was stored in the
-* delete_node_holder variable and hide the modal.
-*/
-function confirmDeleteOnClick(event){
+/** It removes comment/message from the DOM and updates the count of the list items. */
+function submitDelete(event){
     event.preventDefault();
     const modal_class_list = event.target.closest('.modal').classList;
+    const list_item_id_number = event.target[1].value;
+    let item_to_delete = ''
 
-    if(event.target.classList.contains('confirm_delete_btn')){
-        if(modal_class_list.contains('remove_message')){
-            delete_node_holder.closest('#message_container').removeChild(delete_node_holder);
-            hideElement(remove_message);
-            updateMessageCount();
-        }
-        else{
-            let container = delete_node_holder.closest('.comment_container');
-            container.removeChild(delete_node_holder)
-            hideElement(remove_comment);
-            updateCommentCount(container.closest('.messages'));
-        }
+    if(modal_class_list.contains('remove_message')){
+        item_to_delete = message_container.querySelector(`li[message_id_number="${list_item_id_number}"]`);
+        item_to_delete.closest('#message_container').removeChild(item_to_delete);
+        hideElement(remove_message);
+        updateMessageCount();
+    }
+    else{
+        item_to_delete = message_container.querySelector(`li[comment_id_number="${list_item_id_number}"]`);
+        let container = item_to_delete.closest('.comment_container');
+        container.removeChild(item_to_delete);
+        hideElement(remove_comment);
+        updateCommentCount(container.closest('.messages'));
     }
 }
 
 /* Updates message_number span count after adding/deleting messages */
 function updateMessageCount(){
-    const message_count = message_container.children.length - 3;
+    const message_count = message_container.children.length;
     message_number.innerText = message_count;
 
-    if(message_count <=0){
-        showElement(empty_message_container);
+    if(message_count){
+        hideElement(empty_message_container);
     }
     else{
-        hideElement(empty_message_container);
+        showElement(empty_message_container);
     }
 }
 

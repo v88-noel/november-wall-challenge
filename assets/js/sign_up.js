@@ -17,17 +17,14 @@ sign_up.addEventListener('submit', validateRegistrationForm);
 function validateRegistrationForm(event){
     event.preventDefault();
 
-    let error_count = 0;
     let email = event.target[0].value;
     let password = event.target[1].value;
     let confirm_password = event.target[2].value;
 
     if(!email){
-        error_count++;
         showError(email_error, email_input, 'Email is required');
     }
     else if(!validateEmail(email)){
-        error_count++;
         showError(email_error, email_input, 'Invalid email entered');
     }
     else{
@@ -35,59 +32,31 @@ function validateRegistrationForm(event){
     }
 
     if(!password){
-        error_count++;
         showError(password_error, password_input, 'Password is required');
     }
     else if(password.length < 8){
-        error_count++;
         showError(password_error, password_input, 'Password requires minimum of 8 characters');
-    }else{
+    }
+    else{
         hideError(password_error, password_input);
     }
 
     if(!confirm_password){
-        error_count++;
         showError(confirm_password_error, confirm_password_input, 'Confirm password is required');
     }
     else if(confirm_password.length < 8){
-        error_count++;
         showError(confirm_password_error, confirm_password_input, 'Password requires minimum of 8 characters');
     }
     else if(password!==confirm_password){
-        error_count++;
         showError(confirm_password_error, confirm_password_input, 'Password does not match');
     }
     else{
         hideError(confirm_password_error, confirm_password_input);
     }
 
-    if(error_count <= 0){
+    let error_count = sign_up.querySelectorAll('.wrong_input').length;
+
+    if(!error_count){
         window.location.href = 'index.html';
-    }
-}
-/* Shows error message */
-function showError(error_element, input_element, message){
-    error_element.classList.add('show');
-    error_element.classList.remove('hide');
-    error_element.textContent = message; 
-    input_element.classList.add('wrong_input');
-}
-
-/* Remove error password when all condition passed */
-function hideError(error_element, input_element){
-    error_element.classList.add('hide');
-    error_element.classList.remove('show');
-    error_element.textContent = '';
-    input_element.classList.remove('wrong_input');
-}
-
-/* Check if the email is right and returns boolean*/
-function validateEmail(email){
-    let format = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if(email.match(format)){
-        return true;
-    }
-    else{
-        return false;
     }
 }

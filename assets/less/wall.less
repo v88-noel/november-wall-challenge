@@ -31,7 +31,7 @@ body{
             
             div{
                 p{
-                    color: inherit;
+                    color: @primary_color;
                     display: flex;
                     font: 300 16px/24px Poppins-Light;
                 }
@@ -134,6 +134,8 @@ body{
 
                 .edit_message_container{
                     display: flex;
+                    flex-wrap: wrap;
+                    justify-content: flex-end;
                     margin: 20px 0 0 auto;
 
                     button{
@@ -148,18 +150,13 @@ body{
                         border: 1px solid @message_border_color;
                         display: block;
                         padding: 10px;
+                        margin-bottom: 20px;
                         resize: none;
                         width: 100%;
     
                         &:focus{
                             outline: none;
                         }
-                    }
-
-                    .edit_message_buttons_container{
-                        display: flex;
-                        justify-content: flex-end;
-                        margin-top: 20px;
                     }
                     
                     .cancel_update{
@@ -187,6 +184,7 @@ body{
                 }
 
                 .comments{
+                    list-style-type: none;
                     border-radius: 6px;
                     border: 1px solid @message_border_color;
                     margin-top: 20px;
@@ -224,7 +222,7 @@ body{
             }
         }
 
-        .empty_message_container{
+        #empty_message_container{
             margin-top: 140px;
             text-align: center;
 
@@ -232,6 +230,7 @@ body{
                 height: 49px;
                 width: 40px;
             }
+
             p{  
                 color: @grey_font_color;
                 font: 400 16px/24px Poppins-Regular;
@@ -338,6 +337,10 @@ body{
                 margin-right: 24px;
             }
         }
+
+        h2{
+            margin-bottom: 20px;
+        }
     }
 }
 /* End of Modals */
@@ -366,7 +369,6 @@ body{
                 
                 div{
                     display: flex;
-                    color: inherit;
         
                     a{
                         color: @secondary_color;
@@ -482,7 +484,7 @@ body{
             padding: 40px 50px 50px;
             width: 937px;
 
-            h1{
+            h2    {
                 margin-bottom: 40px;   
             }
             

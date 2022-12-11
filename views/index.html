@@ -18,13 +18,13 @@
                 <h2>Log In</h2>
                 <label>
                     Email
-                    <input type="text" id="email_input" tabindex="1">
+                    <input type="text" id="email_input" tabindex="1" autocomplete="email">
                     <span id="email_error" class="hide">sample</span>
                 </label>           
                 <label>
                     Password
                     <a href="#">Forgot Password ?</a>
-                    <input type="password" id="password_input" tabindex="2"> 
+                    <input type="password" id="password_input" tabindex="2" autocomplete="current-password"> 
                     <span id="password_error" class="hide">sample</span>
                 </label>
                 <button type="submit" tabindex="3">SIGN IN</button>
@@ -35,6 +35,7 @@
             <img src="/assets/images/Group_2019.svg" alt="A guy holding a brown paper">
         </div>
     </div>
+    <script src="/assets/js/global.js"></script>
     <script src="/assets/js/index.js"></script>
 </body>
 </html>
