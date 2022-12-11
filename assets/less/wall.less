@@ -22,15 +22,19 @@ body{
             justify-content: center;
 
             h1{
-                color: @primary_color;
-                font: 500 26px/39px Poppins-Medium;
+                a{
+                    color: @primary_color;
+                    font: 500 26px/39px Poppins-Medium;   
+                    text-decoration: none;                 
+                }
             }
             
             div{
-                color: inherit;
-                display: flex;
-                font: 300 16px/24px Poppins-Light;
-
+                p{
+                    color: inherit;
+                    display: flex;
+                    font: 300 16px/24px Poppins-Light;
+                }
                 a{
                     color: @secondary_color;
                     font: 600 16px/24px Poppins-SemiBold;
@@ -68,6 +72,7 @@ body{
         }
 
         #message_container{
+            list-style-type: none;
             .messages{
                 border-radius: 6px;
                 border: 1px solid @message_border_color;
@@ -157,6 +162,11 @@ body{
                         margin-top: 20px;
                     }
                     
+                    .cancel_update{
+                        font: 400 16px/24px Poppins-Regular;
+                        color: #00000099;
+                    }
+
                     .update_message_btn{
                         .btn;
                         margin-left: 30px;
