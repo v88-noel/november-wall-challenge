@@ -28,6 +28,7 @@ const message_container = document.getElementById('message_container');
 const message_template = document.querySelector('.messages');
 const comment_template = document.querySelector('.comments');
 
+
 /* ---- Onload Event Listener Section ---- */
 
 create_message_btn.addEventListener('click', ()=>showElement(create_new_message_modal));
@@ -42,19 +43,8 @@ for( let close_modal_index = 0; close_modal_index < close_modal.length; close_mo
     close_modal[close_modal_index].addEventListener('click', hideModal);
 }
 
+
 /* ---- Function Section ---- */
-
-/* Adds show class to element and remove hide to change display value */
-function showElement(element, class_name = "show"){
-    element.classList.add(class_name);
-    element.classList.remove('hide');
-}
-
-/* Adds hide class to element and remove show to change display value */
-function hideElement(element, class_name = "show"){
-    element.classList.add('hide');
-    element.classList.remove(class_name);
-}
 
 /* Reset form by removing all text in textarea and set button to become disabled */
 function resetForm(textarea, button){
@@ -65,7 +55,6 @@ function resetForm(textarea, button){
 
 /* When the user clicks the delete button, show the delete message/comment modal. */
 function showDeleteModal(content_to_delete){
-
     if(content_to_delete.classList.contains('messages')){
         let message_id = content_to_delete.getAttribute('data-message-id');
         remove_message.querySelector('input').value = message_id;
