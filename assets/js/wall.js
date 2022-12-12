@@ -269,7 +269,6 @@ function submitDelete(event){
     /* Removing the message/comment from the message/comment container. */
     if(modal_class_list.contains('remove_message')){
         item_to_delete = message_container.querySelector(`li[data-message-id="${list_item_id_number}"]`);
-        console.log(list_item_id_number)
         item_to_delete.closest('#message_container').removeChild(item_to_delete);
         hideElement(remove_message);
         updateMessageCount();
