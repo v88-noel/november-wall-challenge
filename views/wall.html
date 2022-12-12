@@ -38,7 +38,7 @@
     <!-- Clones -->
     <ul class="hide">
         <!-- Message template -->
-        <li class="messages" message_id_number="">
+        <li class="messages" data-message-id="">
             <div class="message_wrapper">
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, consequuntur placeat? Ducimus totam, provident fugiat ea porro enim quia nam molestiae fuga, blanditiis autem? Voluptatibus, sequi recusandae? Suscipit, accusantium necessitatibus?</p>
             </div>
@@ -46,7 +46,7 @@
                 <button type="button" class="comment"><span class="comment_icon"></span><span class="comment_count">0</span> comment</button>
                 <button type="button" class="edit active"><span class="edit_icon"></span>Edit</button>
                 <button type="button" class="delete"><span class="delete_icon"></span>Delete</button>
-                <button type="button"><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</button>
+                <div><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</div>
             </div>
             <form class="edit_message_container hide">
                 <textarea name="edit_message_textarea" class="edit_message_textarea"></textarea>     
@@ -55,21 +55,21 @@
             </form>
             <form class="comment_form active hide">
                 <textarea name="comment_form_textarea" class="comment_form_textarea" placeholder="Type your comment here."></textarea>
-                <button type="submit" class="post_comment_btn disabled" type="submit" disabled>Post Comment</button>
+                <button type="submit" class="post_comment_btn disabled" disabled>Post Comment</button>
             </form>
             <ul class="comment_container hide">
             </ul>
         </li>
 
         <!-- Comment Template -->
-        <li class="comments" comment_id_number="">
+        <li class="comments" data-comment-id="">
             <form class="message_wrapper">
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, consequuntur placeat? Ducimus totam, provident fugiat ea porro enim quia nam molestiae fuga, blanditiis autem? Voluptatibus, sequi recusandae? Suscipit, accusantium necessitatibus?</p>
             </form>
             <div class="buttons_container">
                 <button type="button" class="edit active"><span class="edit_icon"></span>Edit</button>
                 <button type="button" class="delete"><span class="delete_icon"></span>Delete</button>
-                <button type="button"><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</button>
+                <div><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</button>
             </div>
             <form class="edit_message_container hide">
                 <textarea name="edit_message_textarea" class="edit_message_textarea"></textarea>

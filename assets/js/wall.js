@@ -67,12 +67,12 @@ function resetForm(textarea, button){
 function showDeleteModal(content_to_delete){
 
     if(content_to_delete.classList.contains('messages')){
-        let message_id = content_to_delete.getAttribute('message_id_number');
+        let message_id = content_to_delete.getAttribute('data-message-id');
         remove_message.querySelector('input').value = message_id;
         showElement(remove_message);
     }
     else{
-        let comment_id = content_to_delete.getAttribute('comment_id_number');
+        let comment_id = content_to_delete.getAttribute('data-comment-id');
         remove_comment.querySelector('input').value = comment_id;
         showElement(remove_comment);
     }
@@ -138,7 +138,7 @@ function createNewMessage(message){
     the message_wrapper p element to the message. */
     const message_id_number = new Date().valueOf();
     const message_clone = message_template.cloneNode(true);
-    message_clone.setAttribute('message_id_number', message_id_number);
+    message_clone.setAttribute('data-message-id', message_id_number);
     message_clone.querySelector('.message_wrapper p').innerText = message;
 
     /* The above code is selecting the elements from the message_clone. */
@@ -185,7 +185,7 @@ function prependComment(event){
    
    /* Cloning the comment template and setting the comment id number and the comment value. */
     const comment_clone = comment_template.cloneNode(true);
-    comment_clone.setAttribute('comment_id_number', comment_id);
+    comment_clone.setAttribute('data-comment-id', comment_id);
     comment_clone.querySelector('.message_wrapper p').innerText = comment_value;
 
    /* The above code is selecting the elements from the comment_clone. */
@@ -268,13 +268,14 @@ function submitDelete(event){
 
     /* Removing the message/comment from the message/comment container. */
     if(modal_class_list.contains('remove_message')){
-        item_to_delete = message_container.querySelector(`li[message_id_number="${list_item_id_number}"]`);
+        item_to_delete = message_container.querySelector(`li[data-message-id="${list_item_id_number}"]`);
+        console.log(list_item_id_number)
         item_to_delete.closest('#message_container').removeChild(item_to_delete);
         hideElement(remove_message);
         updateMessageCount();
     }
     else{
-        item_to_delete = message_container.querySelector(`li[comment_id_number="${list_item_id_number}"]`);
+        item_to_delete = message_container.querySelector(`li[data-comment-id="${list_item_id_number}"]`);
         let container = item_to_delete.closest('.comment_container');
         container.removeChild(item_to_delete);
         hideElement(remove_comment);
