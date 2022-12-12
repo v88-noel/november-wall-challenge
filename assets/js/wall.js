@@ -16,9 +16,7 @@ const modal_panel_form = document.querySelectorAll('.modal_panel');
 
 /* Modal Buttons */
 const cancel_btn = document.querySelectorAll('.cancel_btn');
-const close_modal_btn = document.querySelectorAll('.close_modal_btn');
 const post_message_btn = document.querySelector('.post_message_btn');
-const confirm_delete_btn = document.querySelectorAll('.confirm_delete_btn');
 const close_modal = document.querySelectorAll('.close_modal');
 
 /* Containers */
@@ -124,11 +122,11 @@ function postMessageBtnOnClick(event){
 function createNewMessage(message){
     /* Creating a new message_id_number, cloning the message_template, and setting the
     message_id_number attribute to the new message_id_number. It is also setting the innerText of
-    the message_wrapper p element to the message. */
+    the message_wrapper element to the message. */
     const message_id_number = new Date().valueOf();
     const message_clone = message_template.cloneNode(true);
     message_clone.setAttribute('data-message-id', message_id_number);
-    message_clone.querySelector('.message_wrapper p').innerText = message;
+    message_clone.querySelector('.message_wrapper').innerText = message;
 
     /* The above code is selecting the elements from the message_clone. */
     const comment_form_node = message_clone.querySelector('.comment_form');
@@ -171,11 +169,11 @@ function prependComment(event){
     const comment_form_text_area = parent_message.querySelector('.comment_form textarea');
     const parent_comment_container = parent_message.querySelector('.comment_container');
     parent_comment_container.classList.remove('hide');
-   
+    
    /* Cloning the comment template and setting the comment id number and the comment value. */
     const comment_clone = comment_template.cloneNode(true);
     comment_clone.setAttribute('data-comment-id', comment_id);
-    comment_clone.querySelector('.message_wrapper p').innerText = comment_value;
+    comment_clone.querySelector('.message_wrapper').innerText = comment_value;
 
    /* The above code is selecting the elements from the comment_clone. */
     const button_container = comment_clone.querySelector('.buttons_container');
@@ -209,7 +207,7 @@ function prependComment(event){
 function showEditFunction(button_container, clone){
     const edit_message_container = clone.querySelector('.edit_message_container');
     const message_wrapper = clone.querySelector('.message_wrapper');
-    const message_text = message_wrapper.querySelector('p').innerText;
+    const message_text = message_wrapper.innerText;
     const edit_message_texarea = edit_message_container.querySelector('textarea');
     
     edit_message_texarea.value = message_text;
@@ -240,8 +238,7 @@ function updateMessage(event, message_container){
     const message_wrapper = message_container.querySelector('.message_wrapper');
     const buttons_container = message_container.querySelector('.buttons_container');
     const textarea_value = edit_message_container.querySelector('.edit_message_textarea').value;
-    const message_paragraph = message_wrapper.querySelector('p');
-    message_paragraph.innerText = textarea_value;
+    message_wrapper.innerText = textarea_value;
 
     showElement(message_wrapper);
     showElement(buttons_container);
