@@ -37,7 +37,7 @@
 
     <!-- Clones -->
     <ul class="hide">
-        <!-- Start of Message template -->
+        <!-- Message template -->
         <li class="messages" message_id_number="">
             <div class="message_wrapper">
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, consequuntur placeat? Ducimus totam, provident fugiat ea porro enim quia nam molestiae fuga, blanditiis autem? Voluptatibus, sequi recusandae? Suscipit, accusantium necessitatibus?</p>
@@ -49,20 +49,19 @@
                 <button type="button"><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</button>
             </div>
             <form class="edit_message_container hide">
-                <textarea class="edit_message_textarea"></textarea>     
+                <textarea name="edit_message_textarea" class="edit_message_textarea"></textarea>     
                 <button type="button" class="cancel_update">Cancel</button>
                 <button type="submit" class="update_message_btn"> Update Message</button>
             </form>
             <form class="comment_form active hide">
-                <textarea class="comment_form_textarea" placeholder="Type your comment here."></textarea>
+                <textarea name="comment_form_textarea" class="comment_form_textarea" placeholder="Type your comment here."></textarea>
                 <button type="submit" class="post_comment_btn disabled" type="submit" disabled>Post Comment</button>
             </form>
             <ul class="comment_container hide">
             </ul>
         </li>
-        <!-- End of Message template -->
 
-        <!-- Start of comment container including form -->
+        <!-- Comment Template -->
         <li class="comments" comment_id_number="">
             <form class="message_wrapper">
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, consequuntur placeat? Ducimus totam, provident fugiat ea porro enim quia nam molestiae fuga, blanditiis autem? Voluptatibus, sequi recusandae? Suscipit, accusantium necessitatibus?</p>
@@ -73,14 +72,14 @@
                 <button type="button"><span class="user_icon"></span><span class="user_name">You</span> - Few seconds ago</button>
             </div>
             <form class="edit_message_container hide">
-                <textarea class="edit_message_textarea"></textarea>
+                <textarea name="edit_message_textarea" class="edit_message_textarea"></textarea>
                 <button type="button" class="cancel_update">Cancel</button>
                 <button type="submit" class="update_message_btn">Update Message</button>
             </form>
         </li>
-        <!-- End of comment container including form -->
     </ul>
 
+    <!-- Remove Message Modal -->
     <div class="remove_modal remove_message modal hide">
         <form class="modal_panel">
             <button type="button" class="close_modal_btn close_modal"><span></span></button>
@@ -94,6 +93,8 @@
             </div>
         </form>
     </div>
+
+    <!-- Remove Comment Modal -->
     <div class="remove_modal remove_comment modal hide">
         <form class="modal_panel">
             <button type="button" class="close_modal_btn close_modal"><span></span></button>
@@ -107,11 +108,13 @@
             </div>
         </form>
     </div>
+
+    <!-- Create New Message Modal -->
     <div class="create_new_message_modal modal hide">
         <form class="modal_panel">
             <button type="button" class="close_modal_btn close_modal"><span></span></button>
             <h2>Create a Message</h2>
-            <textarea placeholder="Type your message here" class="create_new_message_textarea"></textarea>
+            <textarea name="create_new_message_textarea" placeholder="Type your message here" class="create_new_message_textarea"></textarea>
             <div>
                 <button type="button" class="cancel_btn close_modal">Cancel</button>
                 <button type="submit" class="post_message_btn disabled" disabled>Post Message</button>
