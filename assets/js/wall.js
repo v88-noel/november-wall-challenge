@@ -1,4 +1,4 @@
-/* ---- Variable Declarations ---- */
+/* ---- Variable Declaration Section---- */
 
 /* Current Number of Message Span */
 const message_number = document.getElementById('message_number');
@@ -28,7 +28,8 @@ const message_container = document.getElementById('message_container');
 const message_template = document.querySelector('.messages');
 const comment_template = document.querySelector('.comments');
 
-/* ---- Onload event Listeners ---- */
+/* ---- Onload Event Listener Section ---- */
+
 create_message_btn.addEventListener('click', ()=>showElement(create_new_message_modal));
 create_new_message_textarea.addEventListener('keyup', (event)=>formTextAreaKeyUp(event, post_message_btn));
 post_message_btn.addEventListener('click', postMessageBtnOnClick);
@@ -41,7 +42,7 @@ for( let close_modal_index = 0; close_modal_index < close_modal.length; close_mo
     close_modal[close_modal_index].addEventListener('click', hideModal);
 }
 
-/* ---- Functions ---- */
+/* ---- Function Section ---- */
 
 /* Adds show class to element and remove hide to change display value */
 function showElement(element, class_name = "show"){
@@ -265,6 +266,7 @@ function submitDelete(event){
     const list_item_id_number = event.target[1].value;
     let item_to_delete = ''
 
+    /* Removing the message/comment from the message/comment container. */
     if(modal_class_list.contains('remove_message')){
         item_to_delete = message_container.querySelector(`li[message_id_number="${list_item_id_number}"]`);
         item_to_delete.closest('#message_container').removeChild(item_to_delete);
