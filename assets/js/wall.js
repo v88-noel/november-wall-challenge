@@ -1,57 +1,59 @@
-/* ---- Variable Declaration Section---- */
-
-/* Current Number of Message Span */
-const message_number = document.getElementById('message_number');
-const empty_message_container = document.querySelector('#empty_message_container');
-
-/* Create Message Container */
-const create_message_btn = document.getElementById('create_message_btn');
-
-/* Modal */
+/* ---- Variable Declaration Section ---- */
+/* Modals */
 const create_new_message_modal = document.querySelector('.create_new_message_modal');
 const create_new_message_textarea = document.querySelector('.create_new_message_textarea');
 const remove_message = document.querySelector('.remove_message');
 const remove_comment = document.querySelector('.remove_comment');
-const modal_panel_form = document.querySelectorAll('.modal_panel');
 
-/* Modal Buttons */
-const cancel_btn = document.querySelectorAll('.cancel_btn');
+/* Modal Buttons and forms */
+const close_modal_btn = document.querySelectorAll('.close_modal');
 const post_message_btn = document.querySelector('.post_message_btn');
-const close_modal = document.querySelectorAll('.close_modal');
 
 /* Containers */
 const message_container = document.getElementById('message_container');
-
-/* Template Elements */
-const message_template = document.querySelector('.messages');
-const comment_template = document.querySelector('.comments');
-
+/* ---- End of Variable Declaration Section ---- */
 
 /* ---- Onload Event Listener Section ---- */
+/* Binds click event listener to create message button to show modal. */
+document.getElementById('create_message_btn').addEventListener('click', ()=>showElement(create_new_message_modal));
 
-create_message_btn.addEventListener('click', ()=>showElement(create_new_message_modal));
+/* Binds submit event listener to form submit of delete comment modal. */
+document.querySelector('.remove_comment_form').addEventListener('submit', submitDeleteComment);
+
+/* Binds submit event listener to form submit of delete message modal. */
+document.querySelector('.remove_message_form').addEventListener('submit', submitDeleteMessage);
+
+/* Binds submit event listener to  form submit of create message form */
+document.querySelector('.create_message_form').addEventListener('submit', submitNewMessage);
 create_new_message_textarea.addEventListener('keyup', (event)=>formTextAreaKeyUp(event, post_message_btn));
-post_message_btn.addEventListener('click', postMessageBtnOnClick);
 
-for (let modal_panel_form_index = 0;  modal_panel_form_index < modal_panel_form.length; modal_panel_form_index++){
-    modal_panel_form[modal_panel_form_index].addEventListener('submit', submitDelete);
+/* Binds click event listerner to all class containing "close_modal"*/
+for( let close_modal_index = 0; close_modal_index < close_modal_btn.length; close_modal_index++){
+    close_modal_btn[close_modal_index].addEventListener('click', hideModal);
 }
-
-for( let close_modal_index = 0; close_modal_index < close_modal.length; close_modal_index++){
-    close_modal[close_modal_index].addEventListener('click', hideModal);
-}
-
+/* ---- End of Onload Event Listener Section ---- */
 
 /* ---- Function Section ---- */
-
-/* Reset form by removing all text in textarea and set button to become disabled */
+/**
+* DOCU: Reset form by removing all text in textarea and set button to become disabled <br>
+* Triggered: When user clicked input a character in modal textarea then clicked "Post Message" button. <br>
+* @function 
+* @param {object} event - the event object
+* @author Noel
+*/
 function resetForm(textarea, button){
     textarea.value = '';
     button.disabled = true;
     button.classList.add('disabled');
 }
 
-/* When the user clicks the delete button, show the delete message/comment modal. */
+/**
+* DOCU: Shows the delete modal for message/comment then pass comment/message id number. <br>
+* Triggered: When the user clicks the delete button, show the delete message/comment modal. <br>
+* @function 
+* @param {object} content_to_delete - the element that was clicked on
+* @author Noel
+*/
 function showDeleteModal(content_to_delete){
     if(content_to_delete.classList.contains('messages')){
         let message_id = content_to_delete.getAttribute('data-message-id');
@@ -65,7 +67,13 @@ function showDeleteModal(content_to_delete){
     }
 }
 
-/* Hides modal containing close_modal class */
+/**
+* DOCU: Hides a modal and resets the form if the modal is the create new message modal. <br>
+* Triggered: When user clicked close or cancel button of any modal. <br>
+* @function
+* @param {object} event - the event object
+* @author Noel
+*/
 function hideModal(event){
     event.preventDefault();
     const modal = event.target.closest('.modal');
@@ -73,12 +81,18 @@ function hideModal(event){
 
     if(modal.classList.contains('create_new_message_modal')){
         const modal_textarea = modal.querySelector('textarea');
-        const post_message_btn = modal.querySelector('.post_message_btn');
         resetForm(modal_textarea, post_message_btn);
     }
 }
 
-/* Show and hide comment form */
+/**
+* DOCU: If the comment form is hidden, show it and the comment container. If the comment form is visible, <br>
+* hide the comment container and the comment form. <br>
+* Triggered: When user clicked comment button
+* @function 
+* @param {object} comment_form - the form element that contains the textarea and submit button
+* @author Noel
+*/
 function toggleAddComment(comment_form){
     const class_list = comment_form.classList;
     const comment_container = comment_form.closest('.messages').querySelector('.comment_container');
@@ -101,7 +115,7 @@ function toggleAddComment(comment_form){
 * @param {object} event - the event object
 * @author Noel
 */
-function postMessageBtnOnClick(event){
+function submitNewMessage(event){
     event.preventDefault();
     const message_value = create_new_message_textarea.value;
 
@@ -119,12 +133,16 @@ function postMessageBtnOnClick(event){
 * @param {string} message - the message that the user has typed in the create new message textarea
 * @author Noel
 */
-function createNewMessage(message){
-    /* Creating a new message_id_number, cloning the message_template, and setting the
-    message_id_number attribute to the new message_id_number. It is also setting the innerText of
-    the message_wrapper element to the message. */
+function createNewMessage(message){   
+    /* Clone the message_template and assigning it to the message_clone variable. */
+    const message_template = document.querySelector('.messages');
     const message_id_number = new Date().valueOf();
     const message_clone = message_template.cloneNode(true);
+
+    /**  
+    * Set the data-message-id attribute to the message_id_number variable. It is also setting the
+    * innerText of the message_wrapper class to the message variable. 
+    */
     message_clone.setAttribute('data-message-id', message_id_number);
     message_clone.querySelector('.message_wrapper').innerText = message;
 
@@ -160,8 +178,10 @@ function createNewMessage(message){
 function prependComment(event){
     event.preventDefault();
 
-    /* Getting the value of the textarea, the id of the comment, the parent message, the submit button,
-    the textarea, and the comment container. */
+    /** Getting the value of the textarea, the id of the comment, the parent message, the submit button,
+    * the textarea, and the comment container. 
+    */
+    const comment_template = document.querySelector('.comments');
     const comment_value = event.target[0].value; 
     const comment_id = new Date().valueOf();
     const parent_message = event.target.closest('.messages');
@@ -198,7 +218,7 @@ function prependComment(event){
 /**
 * It takes a button container and a clone of the message/comment container as arguments, <br>
 * and then it hides the button container and shows the edit message container.  <br>
-* Triggered: When user clicked edit button in comment/message buttons container.  
+* Triggered: When user clicked edit button in comment/message buttons container.  <br>
 * @function
 * @param {object} button_container - The container that holds the buttons.
 * @param {object} clone - The clone of the message/comment that is being edited.
@@ -216,7 +236,13 @@ function showEditFunction(button_container, clone){
     showElement(edit_message_container, 'show_flex');
 }
 
-/* When the user clicks the update button, the message is updated and the message form is disabled. */
+/**
+* It hides the edit message container, shows the message wrapper, and shows the buttons container <br>
+* Triggered: When the user clicks the update button <br>
+* @function
+* @param {object} message_container - The container of the message that is being edited. <br>
+* @author Noel
+*/
 function cancelUpdateMessage(message_container){
     const message_wrapper = message_container.querySelector('.message_wrapper');
     const buttons_container = message_container.querySelector('.buttons_container');
@@ -228,9 +254,14 @@ function cancelUpdateMessage(message_container){
 }
 
 /**
- * It takes an event, and a message container as arguments, and then it updates the message paragraph
- * with the value of the textarea.
- */
+* DOCU: It takes an event, and a message container as arguments, and then it updates the message paragraph <br>
+* with the value of the textarea. <br>
+* Triggered: When user submitted edit form. <br>
+* @function
+* @param {object} event - the event object
+* @param {object} message_container - the container of the message that is being edited
+* @author Noel
+*/
 function updateMessage(event, message_container){
     event.preventDefault();
 
@@ -238,41 +269,80 @@ function updateMessage(event, message_container){
     const message_wrapper = message_container.querySelector('.message_wrapper');
     const buttons_container = message_container.querySelector('.buttons_container');
     const textarea_value = edit_message_container.querySelector('.edit_message_textarea').value;
+
+    /* Setting the innerText of the message_wrapper to the value of the textarea. */
     message_wrapper.innerText = textarea_value;
 
+    /* Showing the message_wrapper and buttons_container and hiding the edit_message_container. */
     showElement(message_wrapper);
     showElement(buttons_container);
     hideElement(edit_message_container, 'show_flex');
 }
 
-/** It removes comment/message from the DOM and updates the count of the list items. */
-function submitDelete(event){
+/**
+* DOCU: The function is called when the user clicks the delete button on a comment. The function then <br>
+* removes the comment from the DOM, hides the delete button, and updates the comment count. <br>
+* Triggered: When user successfully submitted comment delete modal form.
+* @function
+* @param {onject} event - The event object.
+* @author Noel
+*/
+function submitDeleteComment(event){
     event.preventDefault();
-    const modal_class_list = event.target.closest('.modal').classList;
-    const list_item_id_number = event.target[1].value;
-    let item_to_delete = ''
 
-    /* Removing the message/comment from the message/comment container. */
-    if(modal_class_list.contains('remove_message')){
-        item_to_delete = message_container.querySelector(`li[data-message-id="${list_item_id_number}"]`);
-        item_to_delete.closest('#message_container').removeChild(item_to_delete);
-        hideElement(remove_message);
-        updateMessageCount();
-    }
-    else{
-        item_to_delete = message_container.querySelector(`li[data-comment-id="${list_item_id_number}"]`);
-        let container = item_to_delete.closest('.comment_container');
-        container.removeChild(item_to_delete);
-        hideElement(remove_comment);
-        updateCommentCount(container.closest('.messages'));
-    }
+    /* Get the comment id, comment container,  and parent message */
+    const comment_item_id_number = event.target[0].value;
+    const comment_to_delete = message_container.querySelector(`li[data-comment-id="${comment_item_id_number}"]`);
+    const comment_container = comment_to_delete.closest('.comment_container');
+    const comment_parent_message = comment_container.closest('.messages');
+
+    /* Removing the comment from the DOM. */
+    comment_container.removeChild(comment_to_delete);
+    
+    /* Hiding the comment and updating the comment count. */
+    hideElement(remove_comment);
+    updateCommentCount(comment_parent_message);
 }
 
-/* Updates message_number span count after adding/deleting messages */
+
+/**
+* DOCU: It deletes a message from the DOM and updates the message count. <br>
+* Triggered: When user successfully submitted message delete modal form.
+* @function
+* @param {object} event - The event object.
+* @author Noel 
+*/
+function submitDeleteMessage(event){
+    event.preventDefault();
+
+    /* Selecting the message to delete and its id. */
+    const message_item_id_number = event.target[0].value;
+    const message_to_delete = message_container.querySelector(`li[data-message-id="${message_item_id_number}"]`);
+
+    /* Removing the message from the DOM. */
+    message_to_delete.closest('#message_container').removeChild(message_to_delete);
+
+    /* Hiding the message modal and updating the message count. */
+    hideElement(remove_message);
+    updateMessageCount();
+}
+
+/**
+* DOCU: It updates the message count and shows/hides the empty message container.
+* Triggered: When user delete/add message.
+* @function
+* @author Noel 
+*/
 function updateMessageCount(){
     const message_count = message_container.children.length;
-    message_number.innerText = message_count;
+    const message_message_span = document.getElementById('message_number');
+    const empty_message_container = document.getElementById('empty_message_container');
+    message_message_span.innerText = message_count;
 
+    /** 
+    * Check if the message count is greater than 0. If it is, it hides the empty message container.
+    * If it is not, it shows the empty message container. 
+    */
     if(message_count){
         hideElement(empty_message_container);
     }
@@ -282,8 +352,12 @@ function updateMessageCount(){
 }
 
 /**
-* It updates the comment count based from the number of child in comment container. 
-* It then changes the comment button and icons color depending on number of comments.
+* DOCU: It takes a parent message element as an argument and updates the comment count and comment icon
+* based on the number of comments that message has.
+* Triggered: When user delete/add comment.
+* @param {object} parent_message - the parent message of the comment
+* @function
+* @author Noel  
 */
 function updateCommentCount(parent_message){
     const comment_count = parent_message.querySelector('.comment_container').children.length;
@@ -291,6 +365,11 @@ function updateCommentCount(parent_message){
     const comment_count_span = parent_message.querySelector('.comment .comment_count')
     const comment_btn = parent_message.querySelector('.comment');
 
+    /** 
+    * If comment count is greater than 0, it will add the class active_comment_icon to the comment_btn_icon 
+    * and add the class active to the comment_btn. If it is false, it will remove the class active_comment_icon 
+    * from the comment_btn_icon and remove the class active from the comment_btn. 
+    */
     if(comment_count){
         comment_btn_icon.classList.add('active_comment_icon');
         comment_btn.classList.add('active');  
@@ -300,14 +379,25 @@ function updateCommentCount(parent_message){
         comment_btn.classList.remove('active'); 
     }
 
+    /* Setting the innerText of the comment_count_span to the value of the comment_count variable. */
     comment_count_span.innerText = comment_count;
 }
 
 /**
-* If the textarea has text in it, remove the disabled class and set the disabled attribute to false.
-* If the textarea is empty, add the disabled class and set the disabled attribute to true
+* DOCU: Changes button style and disabled attribute value. <br>
+* Triggered: It is called by formTextAreaKeyUp function when updating form button on keyup of textarea. <br>
+* @param {integer} textarea_length - the length of the textarea
+* @param {object} button_to_disable - The button you want to disable/enable
+* @function
+* @author Noel  
 */
 function changeDisabledAttribute(textarea_length, button_to_disable){
+
+    /** 
+    * Check the length of the textarea. If it is greater than 0, it removes the disabled class
+    * and sets the disabled attribute to false. If the length is 0, it adds the disabled class and
+    * sets the disabled attribute to true. 
+    */
     if(textarea_length){
         button_to_disable.classList.remove('disabled');
         button_to_disable.disabled = false;
@@ -318,7 +408,14 @@ function changeDisabledAttribute(textarea_length, button_to_disable){
     }
 }
 
-/* Function that helps bind keyup event listener to form submit buttons in create new comment/message as well as edit comment/message. */
+/**
+* DOCU: Pass textarea length change button class and disabled attribut depending of length of textarea. <br>
+* Triggered: It is called by keyup event listener of a form textarea. <br>
+* @param {object} event - The event object
+* @param {object} form_submit_btn - The submit button of the form.
+* @function
+* @author Noel 
+*/
 function formTextAreaKeyUp(event, form_submit_btn){
     const textarea_length = event.target.value.trim().length;
     changeDisabledAttribute(textarea_length, form_submit_btn);

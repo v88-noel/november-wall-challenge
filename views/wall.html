@@ -77,9 +77,9 @@
 
     <!-- Remove Message Modal -->
     <div class="remove_modal remove_message modal hide">
-        <form class="modal_panel">
-            <button type="button" class="close_modal_btn close_modal"><span></span></button>
+        <form class="modal_panel remove_message_form">
             <input type="hidden" name="message_id" value="">
+            <button type="button" class="close_modal_btn close_modal"><span></span></button>
             <h2>Confirm Delete Message</h2>
             <p>Are you sure you want to remove this message ?</p>
             <p>This action cannot be undone.</p>
@@ -92,9 +92,9 @@
 
     <!-- Remove Comment Modal -->
     <div class="remove_modal remove_comment modal hide">
-        <form class="modal_panel">
-            <button type="button" class="close_modal_btn close_modal"><span></span></button>
+        <form class="modal_panel remove_comment_form">
             <input type="hidden" name="comment_id" value="">
+            <button type="button" class="close_modal_btn close_modal"><span></span></button>
             <h2>Confirm Delete Comment</h2>
             <p>Are you sure you want to remove this comment ?</p>
             <p>This action cannot be undone.</p>
@@ -107,7 +107,7 @@
 
     <!-- Create New Message Modal -->
     <div class="create_new_message_modal modal hide">
-        <form class="modal_panel">
+        <form class="modal_panel create_message_form">
             <button type="button" class="close_modal_btn close_modal"><span></span></button>
             <h2>Create a Message</h2>
             <textarea name="create_new_message_textarea" placeholder="Type your message here" class="create_new_message_textarea"></textarea>
